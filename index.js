@@ -25,7 +25,16 @@ client.connect();
 const saltRounds = 8;
 
 // Passport configuration
-var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+const FacebookStrategy = require('passport-facebook-token');
+const FACEBOOK_APP_ID = "asd";
+const FACEBOOK_APP_SECRET = "asd";
+
+const GoogleStrategy = require('passport-token-google2').Strategy;
+const GOOGLE_CLIENT_ID = "asd";
+const GOOGLE_CLIENT_SECRET = "asd";
 
 // JWT secret key
 const jwt_secret_key = 'C4ERJydv5yFZBz9iMBhK'; // random string
@@ -97,7 +106,7 @@ app.post('/api/signup', (req, res) => {
   })
 });
 
-app.post('/api/login', passport.authenticate('local', { session: false }), (req, res) => {
+app.post('/api/login/local', passport.authenticate('local', { session: false }), (req, res) => {
   if(req.user.message) {
     return res.status(500).send(req.user.message);
   }
@@ -111,6 +120,46 @@ app.post('/api/login', passport.authenticate('local', { session: false }), (req,
       token
     });
   });
+});
+
+app.post('/api/login/facebook', passport.authenticate('facebook-token', { session: false }), (req, res) => {
+  if(req.user.message) {
+    return res.status(500).send(req.user.message);
+  }
+
+  console.log(req.user);
+  
+  return res.status(500).send('Service temporary unavailable.');
+
+  /*jwt.sign(req.user, jwt_secret_key, (err, token) => {
+    if(err) {
+      return res.status(500).send('An error occured while generating session token.');
+    }
+    return res.status(200).json({
+      user: req.user,
+      token
+    });
+  });*/
+});
+
+app.post('/api/login/google', passport.authenticate('google-token', { session: false }), (req, res) => {
+  if(req.user.message) {
+    return res.status(500).send(req.user.message);
+  }
+
+  console.log(req.user);
+  
+  return res.status(500).send('Service temporary unavailable.');
+
+  /*jwt.sign(req.user, jwt_secret_key, (err, token) => {
+    if(err) {
+      return res.status(500).send('An error occured while generating session token.');
+    }
+    return res.status(200).json({
+      user: req.user,
+      token
+    });
+  });*/
 });
 
 app.get('/api/protected_data', verifyToken, (req, res) => {
@@ -156,6 +205,29 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
         });
       });
     });
+  }
+));
+
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET
+  }, function(accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+    /*User.findOrCreate({facebookId: profile.id}, function (error, user) {
+      return done(error, user);
+    });*/
+  }
+));
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET
+  }, function(accessToken, refreshToken, profile, done) {
+    fetchGoogleUser(profile, accessToken)
+      .then((user) => done(null, user))
+      .catch((err) => {
+        return done(err)
+      });
   }
 ));
 
