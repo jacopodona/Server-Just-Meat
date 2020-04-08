@@ -1,111 +1,584 @@
-CREATE TABLE "supermarkets" (
-	"id" serial NOT NULL,
-	"name" VARCHAR(50) NOT NULL,
-	"longitude" serial NOT NULL,
-	"latitude" serial NOT NULL,
-	CONSTRAINT "supermarkets_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.7 (Ubuntu 11.7-0ubuntu0.19.10.1)
+-- Dumped by pg_dump version 11.7 (Ubuntu 11.7-0ubuntu0.19.10.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: credentials; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.credentials (
+    fk_user integer NOT NULL,
+    hashed_password character varying(60) NOT NULL,
+    mail character varying(100) NOT NULL
 );
 
 
+ALTER TABLE public.credentials OWNER TO davide;
 
-CREATE TABLE "has_product" (
-	"fk_supermarket" integer NOT NULL,
-	"fk_product" integer NOT NULL,
-	"department" VARCHAR(50) NOT NULL,
-	CONSTRAINT "has_product_pk" PRIMARY KEY ("fk_supermarket","fk_product")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: has_product; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.has_product (
+    fk_supermarket integer NOT NULL,
+    fk_product integer NOT NULL,
+    department character varying(50)
 );
 
 
+ALTER TABLE public.has_product OWNER TO davide;
 
-CREATE TABLE "products" (
-	"id" serial NOT NULL,
-	"name" VARCHAR(50) NOT NULL,
-	"price" DECIMAL NOT NULL,
-	"barcode" VARCHAR(75) NOT NULL,
-	"available" serial NOT NULL,
-	"category" VARCHAR(50) NOT NULL,
-	"discount" integer NOT NULL DEFAULT '0',
-	CONSTRAINT "products_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: order; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public."order" (
+    id integer NOT NULL,
+    creation_date timestamp without time zone NOT NULL,
+    pickup_time timestamp without time zone NOT NULL,
+    amount numeric NOT NULL,
+    fk_supermarket integer NOT NULL
 );
 
 
+ALTER TABLE public."order" OWNER TO davide;
 
-CREATE TABLE "users" (
-	"id" serial NOT NULL,
-	"name" VARCHAR(25) NOT NULL,
-	"last_name" VARCHAR(25) NOT NULL,
-	"address" VARCHAR(100) NOT NULL,
-	"birth_date" DATE NOT NULL,
-	CONSTRAINT "users_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: order_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.order_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_id_seq OWNER TO davide;
+
+--
+-- Name: order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.order_id_seq OWNED BY public."order".id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.orders (
+    fk_user integer NOT NULL,
+    fk_order integer NOT NULL
 );
 
 
+ALTER TABLE public.orders OWNER TO davide;
 
-CREATE TABLE "orders" (
-	"fk_user" serial NOT NULL,
-	"fk_order" integer NOT NULL,
-	CONSTRAINT "orders_pk" PRIMARY KEY ("fk_user","fk_order")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: orders_fk_user_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.orders_fk_user_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_fk_user_seq OWNER TO davide;
+
+--
+-- Name: orders_fk_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.orders_fk_user_seq OWNED BY public.orders.fk_user;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.products (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    price numeric NOT NULL,
+    barcode character varying(75) NOT NULL,
+    available integer NOT NULL,
+    category character varying(50) NOT NULL,
+    discount numeric DEFAULT 0 NOT NULL,
+    image character varying(10)
 );
 
 
+ALTER TABLE public.products OWNER TO davide;
 
-CREATE TABLE "order" (
-	"id" serial NOT NULL,
-	"creation_date" TIMESTAMP NOT NULL,
-	"pickup_time" TIMESTAMP NOT NULL,
-	"amount" DECIMAL NOT NULL,
-	"fk_supermarket" integer NOT NULL,
-	CONSTRAINT "order_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: products_available_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.products_available_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_available_seq OWNER TO davide;
+
+--
+-- Name: products_available_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.products_available_seq OWNED BY public.products.available;
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.products_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO davide;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: shopping_cart; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.shopping_cart (
+    fk_product integer NOT NULL,
+    fk_order integer NOT NULL,
+    quantity integer NOT NULL
 );
 
 
+ALTER TABLE public.shopping_cart OWNER TO davide;
 
-CREATE TABLE "shopping_cart" (
-	"fk_product" integer NOT NULL,
-	"fk_order" integer NOT NULL,
-	"quantity" integer NOT NULL,
-	CONSTRAINT "shopping_cart_pk" PRIMARY KEY ("fk_product","fk_order","quantity")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: supermarkets; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.supermarkets (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    address character varying(100) NOT NULL
 );
 
 
+ALTER TABLE public.supermarkets OWNER TO davide;
 
-CREATE TABLE "credentials" (
-	"fk_user" integer NOT NULL,
-	"hashed_password" VARCHAR(60) NOT NULL,
-	"mail" VARCHAR(100) NOT NULL UNIQUE,
-	CONSTRAINT "credentials_pk" PRIMARY KEY ("fk_user")
-) WITH (
-  OIDS=FALSE
+--
+-- Name: supermarkets_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.supermarkets_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.supermarkets_id_seq OWNER TO davide;
+
+--
+-- Name: supermarkets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.supermarkets_id_seq OWNED BY public.supermarkets.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: davide
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    name character varying(25) NOT NULL,
+    last_name character varying(25) NOT NULL,
+    address character varying(100) NOT NULL,
+    birth_date date NOT NULL
 );
 
 
+ALTER TABLE public.users OWNER TO davide;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE "has_product" ADD CONSTRAINT "has_product_fk0" FOREIGN KEY ("fk_supermarket") REFERENCES "supermarkets"("id");
-ALTER TABLE "has_product" ADD CONSTRAINT "has_product_fk1" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
+ALTER TABLE public.users_id_seq OWNER TO davide;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
+--
+-- Name: order id; Type: DEFAULT; Schema: public; Owner: davide
+--
 
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("fk_order") REFERENCES "order"("id");
+ALTER TABLE ONLY public."order" ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
 
-ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("fk_supermarket") REFERENCES "supermarkets"("id");
 
-ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_fk0" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
-ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_fk1" FOREIGN KEY ("fk_order") REFERENCES "order"("id");
+--
+-- Name: orders fk_user; Type: DEFAULT; Schema: public; Owner: davide
+--
 
-ALTER TABLE "credentials" ADD CONSTRAINT "credentials_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
+ALTER TABLE ONLY public.orders ALTER COLUMN fk_user SET DEFAULT nextval('public.orders_fk_user_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: products available; Type: DEFAULT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN available SET DEFAULT nextval('public.products_available_seq'::regclass);
+
+
+--
+-- Name: supermarkets id; Type: DEFAULT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.supermarkets ALTER COLUMN id SET DEFAULT nextval('public.supermarkets_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: credentials; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.credentials (fk_user, hashed_password, mail) FROM stdin;
+1	$2b$08$E/1wZrQ4Z/w9/lWAJ4JoHuSBfTUCaA6Nnfl31FdabK7Qa9ca.lcLK	davide.farina@gmail.com
+2	$2b$08$HxiPzp52k91sOB7HZ3yWee4TwvLrRdF1/Km1O3NCiVxexOrB.edkS	michele.rigo@gmail.com
+3	$2b$08$08RIDdF2U0OYfTbfUTR2LuJN8Pa3xP01IpkiV454fiOvryChT6VW.	gabriele.pasquali@gmail.com
+\.
+
+
+--
+-- Data for Name: has_product; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.has_product (fk_supermarket, fk_product, department) FROM stdin;
+1	1	\N
+1	2	\N
+1	3	\N
+3	5	\N
+3	6	\N
+3	4	\N
+3	7	\N
+2	8	\N
+2	9	\N
+2	10	\N
+\.
+
+
+--
+-- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public."order" (id, creation_date, pickup_time, amount, fk_supermarket) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.orders (fk_user, fk_order) FROM stdin;
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.products (id, name, price, barcode, available, category, discount, image) FROM stdin;
+1	Tisana bio	5.50	to_implement	100	tisane	0	\N
+2	Lattuga nostrana bio 0.5kg	2.50	to_implement	100	verdura	0	\N
+3	Peperoni nostrani bio 0.5kg	2.30	to_implement	100	verdura	0	\N
+4	Formaggio casolet 0.4kg	4.25	to_implement	100	formaggi	0	\N
+5	Formaggio Trentingrana 1.5kg	9.60	to_implement	100	formaggi	0	\N
+6	Speck Alto-Adige 0.2kg	2.20	to_implement	100	affettati	0	\N
+7	Soppressa nostrana 0.2kg	2.65	to_implement	100	affettati	0	\N
+8	Tè alla pesca San Benedetto 1.5l	1.50	to_implement	100	bevande	0	\N
+9	Yogurt Mila	0.25	to_implement	100	bevande	0	\N
+10	Pizza surgelata Buitoni	3.25	to_implement	100	surgelati	0	\N
+\.
+
+
+--
+-- Data for Name: shopping_cart; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.shopping_cart (fk_product, fk_order, quantity) FROM stdin;
+\.
+
+
+--
+-- Data for Name: supermarkets; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.supermarkets (id, name, address) FROM stdin;
+1	NaturaSi	Via del Brennero, 138, 38121 Trento TN
+2	ALDI	Via del Brennero, 111, 38122 Trento TN
+3	Tito Speck - Il Maso dello Speck	Via Giuseppe Mazzini, 2, 38122 Trento TN
+4	MiniPoli	Via Benedetto Giovanelli, 25, 38122 Trento TN
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: davide
+--
+
+COPY public.users (id, name, last_name, address, birth_date) FROM stdin;
+1	Davide	Farina	Via Fratelli Perini, 159, 38122 Trento TN	1998-11-27
+2	Michele	Rigo	Piazza Lodron, 31, 38122 Trento TN	1999-01-12
+3	Gabriele	Pasquali	Via alla Pelegrina, 3, 38121, Trento TN	2000-08-30
+\.
+
+
+--
+-- Name: order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.order_id_seq', 1, false);
+
+
+--
+-- Name: orders_fk_user_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.orders_fk_user_seq', 1, false);
+
+
+--
+-- Name: products_available_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.products_available_seq', 1, false);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 10, true);
+
+
+--
+-- Name: supermarkets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.supermarkets_id_seq', 4, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+
+
+--
+-- Name: credentials credentials_mail_key; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.credentials
+    ADD CONSTRAINT credentials_mail_key UNIQUE (mail);
+
+
+--
+-- Name: credentials credentials_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.credentials
+    ADD CONSTRAINT credentials_pk PRIMARY KEY (fk_user);
+
+
+--
+-- Name: has_product has_product_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.has_product
+    ADD CONSTRAINT has_product_pk PRIMARY KEY (fk_supermarket, fk_product);
+
+
+--
+-- Name: order order_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT order_pk PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pk PRIMARY KEY (fk_user, fk_order);
+
+
+--
+-- Name: products products_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pk PRIMARY KEY (id);
+
+
+--
+-- Name: shopping_cart shopping_cart_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.shopping_cart
+    ADD CONSTRAINT shopping_cart_pk PRIMARY KEY (fk_product, fk_order, quantity);
+
+
+--
+-- Name: supermarkets supermarkets_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.supermarkets
+    ADD CONSTRAINT supermarkets_pk PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pk PRIMARY KEY (id);
+
+
+--
+-- Name: credentials credentials_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.credentials
+    ADD CONSTRAINT credentials_fk0 FOREIGN KEY (fk_user) REFERENCES public.users(id);
+
+
+--
+-- Name: has_product has_product_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.has_product
+    ADD CONSTRAINT has_product_fk0 FOREIGN KEY (fk_supermarket) REFERENCES public.supermarkets(id);
+
+
+--
+-- Name: has_product has_product_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.has_product
+    ADD CONSTRAINT has_product_fk1 FOREIGN KEY (fk_product) REFERENCES public.products(id);
+
+
+--
+-- Name: order order_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT order_fk0 FOREIGN KEY (fk_supermarket) REFERENCES public.supermarkets(id);
+
+
+--
+-- Name: orders orders_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_fk0 FOREIGN KEY (fk_user) REFERENCES public.users(id);
+
+
+--
+-- Name: orders orders_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_fk1 FOREIGN KEY (fk_order) REFERENCES public."order"(id);
+
+
+--
+-- Name: shopping_cart shopping_cart_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.shopping_cart
+    ADD CONSTRAINT shopping_cart_fk0 FOREIGN KEY (fk_product) REFERENCES public.products(id);
+
+
+--
+-- Name: shopping_cart shopping_cart_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+--
+
+ALTER TABLE ONLY public.shopping_cart
+    ADD CONSTRAINT shopping_cart_fk1 FOREIGN KEY (fk_order) REFERENCES public."order"(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

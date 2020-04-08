@@ -29,21 +29,21 @@ var passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const FacebookStrategy = require('passport-facebook-token');
-const FACEBOOK_APP_ID = "asd";
-const FACEBOOK_APP_SECRET = "asd";
+const FACEBOOK_APP_ID = "in_development";
+const FACEBOOK_APP_SECRET = "in_development";
 
 const GoogleStrategy = require('passport-token-google2').Strategy;
-const GOOGLE_CLIENT_ID = "asd";
-const GOOGLE_CLIENT_SECRET = "asd";
+const GOOGLE_CLIENT_ID = "in_development";
+const GOOGLE_CLIENT_SECRET = "in_development";
 
 // JWT secret key
-const jwt_secret_key = 'C4ERJydv5yFZBz9iMBhK'; // random string
+const jwt_secret_key = 'C4ERJydv5yFZBz9iMBhK'; // Random string
 
 
 
 const app = express();
 
-// server options
+// Server options
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
@@ -167,21 +167,10 @@ app.get('/api/protected_data', verifyToken, (req, res) => {
     if(err) {
       return res.status(403).send('Forbidden');
     }
-    //get needed data
+    // get needed data
     return res.json(auth_data);
   });
 });
-
-// Verify JSON Web Token
-function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
-  if(bearerHeader) {
-    req.token = bearerHeader.split(' ')[1];
-    next();
-  } else {
-    res.status(403).send('Forbidden');
-  }
-}
 
 // Passport strategies
 passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
@@ -207,7 +196,6 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
     });
   }
 ));
-
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET
@@ -218,7 +206,6 @@ passport.use(new FacebookStrategy({
     });*/
   }
 ));
-
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET
@@ -231,4 +218,16 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+// Verify JSON Web Token
+function verifyToken(req, res, next) {
+  const bearerHeader = req.headers['authorization'];
+  if(bearerHeader) {
+    req.token = bearerHeader.split(' ')[1];
+    next();
+  } else {
+    res.status(403).send('Forbidden');
+  }
+}
+
+// Enjoy
 app.listen(5000, () => console.log('Server started on port 5000'));
