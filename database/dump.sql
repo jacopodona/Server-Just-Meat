@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: credentials; Type: TABLE; Schema: public; Owner: davide
+-- Name: credentials; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.credentials (
@@ -31,10 +31,10 @@ CREATE TABLE public.credentials (
 );
 
 
-ALTER TABLE public.credentials OWNER TO davide;
+ALTER TABLE public.credentials OWNER TO admin;
 
 --
--- Name: has_product; Type: TABLE; Schema: public; Owner: davide
+-- Name: has_product; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.has_product (
@@ -44,10 +44,10 @@ CREATE TABLE public.has_product (
 );
 
 
-ALTER TABLE public.has_product OWNER TO davide;
+ALTER TABLE public.has_product OWNER TO admin;
 
 --
--- Name: order; Type: TABLE; Schema: public; Owner: davide
+-- Name: order; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public."order" (
@@ -59,10 +59,10 @@ CREATE TABLE public."order" (
 );
 
 
-ALTER TABLE public."order" OWNER TO davide;
+ALTER TABLE public."order" OWNER TO admin;
 
 --
--- Name: order_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: order_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.order_id_seq
@@ -74,17 +74,17 @@ CREATE SEQUENCE public.order_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.order_id_seq OWNER TO davide;
+ALTER TABLE public.order_id_seq OWNER TO admin;
 
 --
--- Name: order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.order_id_seq OWNED BY public."order".id;
 
 
 --
--- Name: orders; Type: TABLE; Schema: public; Owner: davide
+-- Name: orders; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.orders (
@@ -93,10 +93,10 @@ CREATE TABLE public.orders (
 );
 
 
-ALTER TABLE public.orders OWNER TO davide;
+ALTER TABLE public.orders OWNER TO admin;
 
 --
--- Name: orders_fk_user_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: orders_fk_user_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.orders_fk_user_seq
@@ -108,17 +108,17 @@ CREATE SEQUENCE public.orders_fk_user_seq
     CACHE 1;
 
 
-ALTER TABLE public.orders_fk_user_seq OWNER TO davide;
+ALTER TABLE public.orders_fk_user_seq OWNER TO admin;
 
 --
--- Name: orders_fk_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: orders_fk_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.orders_fk_user_seq OWNED BY public.orders.fk_user;
 
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: davide
+-- Name: products; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.products (
@@ -133,10 +133,10 @@ CREATE TABLE public.products (
 );
 
 
-ALTER TABLE public.products OWNER TO davide;
+ALTER TABLE public.products OWNER TO admin;
 
 --
--- Name: products_available_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: products_available_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.products_available_seq
@@ -148,17 +148,17 @@ CREATE SEQUENCE public.products_available_seq
     CACHE 1;
 
 
-ALTER TABLE public.products_available_seq OWNER TO davide;
+ALTER TABLE public.products_available_seq OWNER TO admin;
 
 --
--- Name: products_available_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: products_available_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.products_available_seq OWNED BY public.products.available;
 
 
 --
--- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.products_id_seq
@@ -170,17 +170,17 @@ CREATE SEQUENCE public.products_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.products_id_seq OWNER TO davide;
+ALTER TABLE public.products_id_seq OWNER TO admin;
 
 --
--- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
 
 --
--- Name: shopping_cart; Type: TABLE; Schema: public; Owner: davide
+-- Name: shopping_cart; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.shopping_cart (
@@ -190,10 +190,10 @@ CREATE TABLE public.shopping_cart (
 );
 
 
-ALTER TABLE public.shopping_cart OWNER TO davide;
+ALTER TABLE public.shopping_cart OWNER TO admin;
 
 --
--- Name: supermarkets; Type: TABLE; Schema: public; Owner: davide
+-- Name: supermarkets; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.supermarkets (
@@ -203,10 +203,10 @@ CREATE TABLE public.supermarkets (
 );
 
 
-ALTER TABLE public.supermarkets OWNER TO davide;
+ALTER TABLE public.supermarkets OWNER TO admin;
 
 --
--- Name: supermarkets_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: supermarkets_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.supermarkets_id_seq
@@ -218,17 +218,17 @@ CREATE SEQUENCE public.supermarkets_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.supermarkets_id_seq OWNER TO davide;
+ALTER TABLE public.supermarkets_id_seq OWNER TO admin;
 
 --
--- Name: supermarkets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: supermarkets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.supermarkets_id_seq OWNED BY public.supermarkets.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: davide
+-- Name: users; Type: TABLE; Schema: public; Owner: admin
 --
 
 CREATE TABLE public.users (
@@ -240,10 +240,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO davide;
+ALTER TABLE public.users OWNER TO admin;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: davide
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -255,59 +255,59 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO davide;
+ALTER TABLE public.users_id_seq OWNER TO admin;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: davide
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: order id; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: order id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public."order" ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
 
 
 --
--- Name: orders fk_user; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: orders fk_user; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.orders ALTER COLUMN fk_user SET DEFAULT nextval('public.orders_fk_user_seq'::regclass);
 
 
 --
--- Name: products id; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
 
 
 --
--- Name: products available; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: products available; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.products ALTER COLUMN available SET DEFAULT nextval('public.products_available_seq'::regclass);
 
 
 --
--- Name: supermarkets id; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: supermarkets id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.supermarkets ALTER COLUMN id SET DEFAULT nextval('public.supermarkets_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: davide
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: credentials; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: credentials; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.credentials (fk_user, hashed_password, mail) FROM stdin;
@@ -318,7 +318,7 @@ COPY public.credentials (fk_user, hashed_password, mail) FROM stdin;
 
 
 --
--- Data for Name: has_product; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: has_product; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.has_product (fk_supermarket, fk_product, department) FROM stdin;
@@ -332,11 +332,27 @@ COPY public.has_product (fk_supermarket, fk_product, department) FROM stdin;
 2	8	\N
 2	9	\N
 2	10	\N
+4	11	\N
+4	12	\N
+4	13	\N
+4	14	\N
+4	15	\N
+4	16	\N
+4	17	\N
+4	18	\N
+4	19	\N
+4	20	\N
+4	21	\N
+4	22	\N
+4	23	\N
+4	24	\N
+4	25	\N
+4	26	\N
 \.
 
 
 --
--- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public."order" (id, creation_date, pickup_time, amount, fk_supermarket) FROM stdin;
@@ -344,7 +360,7 @@ COPY public."order" (id, creation_date, pickup_time, amount, fk_supermarket) FRO
 
 
 --
--- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.orders (fk_user, fk_order) FROM stdin;
@@ -352,7 +368,7 @@ COPY public.orders (fk_user, fk_order) FROM stdin;
 
 
 --
--- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.products (id, name, price, barcode, available, category, discount, image) FROM stdin;
@@ -366,11 +382,27 @@ COPY public.products (id, name, price, barcode, available, category, discount, i
 8	Tè alla pesca San Benedetto 1.5l	1.50	to_implement	100	bevande	0	\N
 9	Yogurt Mila	0.25	to_implement	100	bevande	0	\N
 10	Pizza surgelata Buitoni	3.25	to_implement	100	surgelati	0	\N
+11	Ananas	1.99	to_implement	100	frutta	0	\N
+12	Pere william 1kg	2.99	to_implement	100	frutta	0.25	\N
+13	Fragole in vaschetta 0.5kg	1.5	to_implement	100	frutta	0.25	\N
+14	Finocchio 1kg	1.8	to_implement	100	verdura	0.1	\N
+15	Insalata misticanza 0.125kg	1.3	to_implement	100	verdura	0.3	\N
+16	Insalata arcobaleno 0.5kg	2.29	to_implement	100	verdura	0.4	\N
+17	Zucchine 1kg	2.39	to_implement	100	verdura	0.4	\N
+18	Tagliata di bovino adulta 0.5kg	17.50	to_implement	100	macelleria	0.3	\N
+19	Fette sceltissime di vitello 0.5kg	23.9	to_implement	100	macelleria	0.25	\N
+20	Spiedini di pollo x4 0.5kg	11.9	to_implement	100	macelleria	0.1	\N
+21	Lonza di suino 0.5kg	8.8	to_implement	100	macelleria	0.5	\N
+22	Chicken burger 0.2kg	2.98	to_implement	100	macelleria	0.3	\N
+23	Seppia pulita fresca 1kg	20.9	to_implement	100	pescheria	0.3	\N
+24	Spiedino di pesce 1kg	17.9	to_implement	100	pescheria	0.2	\N
+25	Trota salmonata 1kg	10.9	to_implement	100	pescheria	0.15	\N
+26	Orata fresca 1kg	8.5	to_implement	100	pescheria	0.5	\N
 \.
 
 
 --
--- Data for Name: shopping_cart; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: shopping_cart; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.shopping_cart (fk_product, fk_order, quantity) FROM stdin;
@@ -378,7 +410,7 @@ COPY public.shopping_cart (fk_product, fk_order, quantity) FROM stdin;
 
 
 --
--- Data for Name: supermarkets; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: supermarkets; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.supermarkets (id, name, address) FROM stdin;
@@ -390,7 +422,7 @@ COPY public.supermarkets (id, name, address) FROM stdin;
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: davide
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY public.users (id, name, last_name, address, birth_date) FROM stdin;
@@ -401,49 +433,49 @@ COPY public.users (id, name, last_name, address, birth_date) FROM stdin;
 
 
 --
--- Name: order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
 SELECT pg_catalog.setval('public.order_id_seq', 1, false);
 
 
 --
--- Name: orders_fk_user_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: orders_fk_user_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
 SELECT pg_catalog.setval('public.orders_fk_user_seq', 1, false);
 
 
 --
--- Name: products_available_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: products_available_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
 SELECT pg_catalog.setval('public.products_available_seq', 1, false);
 
 
 --
--- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 10, true);
+SELECT pg_catalog.setval('public.products_id_seq', 26, true);
 
 
 --
--- Name: supermarkets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: supermarkets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
 SELECT pg_catalog.setval('public.supermarkets_id_seq', 4, true);
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: davide
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 3, true);
 
 
 --
--- Name: credentials credentials_mail_key; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: credentials credentials_mail_key; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.credentials
@@ -451,7 +483,7 @@ ALTER TABLE ONLY public.credentials
 
 
 --
--- Name: credentials credentials_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: credentials credentials_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.credentials
@@ -459,7 +491,7 @@ ALTER TABLE ONLY public.credentials
 
 
 --
--- Name: has_product has_product_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: has_product has_product_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.has_product
@@ -467,7 +499,7 @@ ALTER TABLE ONLY public.has_product
 
 
 --
--- Name: order order_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: order order_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public."order"
@@ -475,7 +507,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.orders
@@ -483,7 +515,7 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: products products_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: products products_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.products
@@ -491,7 +523,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: shopping_cart shopping_cart_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: shopping_cart shopping_cart_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.shopping_cart
@@ -499,7 +531,7 @@ ALTER TABLE ONLY public.shopping_cart
 
 
 --
--- Name: supermarkets supermarkets_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: supermarkets supermarkets_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.supermarkets
@@ -507,7 +539,7 @@ ALTER TABLE ONLY public.supermarkets
 
 
 --
--- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: davide
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.users
@@ -515,7 +547,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: credentials credentials_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: credentials credentials_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.credentials
@@ -523,7 +555,7 @@ ALTER TABLE ONLY public.credentials
 
 
 --
--- Name: has_product has_product_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: has_product has_product_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.has_product
@@ -531,7 +563,7 @@ ALTER TABLE ONLY public.has_product
 
 
 --
--- Name: has_product has_product_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: has_product has_product_fk1; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.has_product
@@ -539,7 +571,7 @@ ALTER TABLE ONLY public.has_product
 
 
 --
--- Name: order order_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: order order_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public."order"
@@ -547,7 +579,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- Name: orders orders_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: orders orders_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.orders
@@ -555,7 +587,7 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: orders orders_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: orders orders_fk1; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.orders
@@ -563,7 +595,7 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: shopping_cart shopping_cart_fk0; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: shopping_cart shopping_cart_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.shopping_cart
@@ -571,7 +603,7 @@ ALTER TABLE ONLY public.shopping_cart
 
 
 --
--- Name: shopping_cart shopping_cart_fk1; Type: FK CONSTRAINT; Schema: public; Owner: davide
+-- Name: shopping_cart shopping_cart_fk1; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.shopping_cart
