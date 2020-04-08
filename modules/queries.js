@@ -40,13 +40,28 @@ const get_user = (id) => {
   }
 }
 
+const get_supermarkets = () => {
+  return {
+    text: 'SELECT * FROM supermarkets'
+  }
+}
+
+const get_products = (id) => {
+  return {
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, available, category, department, discount, image FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id WHERE S.id = $1',
+    values: [id]
+  }
+}
+
 const queries = {
   insert_user,
   insert_credentials,
   delete_user,
   exists_user,
   get_password_from_mail,
-  get_user
+  get_user,
+  get_supermarkets,
+  get_products
 }
 
 exports.queries = queries;

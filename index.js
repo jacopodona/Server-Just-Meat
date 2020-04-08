@@ -48,7 +48,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // Account creation with username and password
-app.post('/api/signup', (req, res) => {
+app.post('/api/v1/signup', (req, res) => {
 
   const user = {
     name: req.body.name,
@@ -106,7 +106,7 @@ app.post('/api/signup', (req, res) => {
   })
 });
 
-app.post('/api/login/local', passport.authenticate('local', { session: false }), (req, res) => {
+app.post('/api/v1/login/local', passport.authenticate('local', { session: false }), (req, res) => {
   if(req.user.message) {
     return res.status(500).send(req.user.message);
   }
@@ -122,7 +122,7 @@ app.post('/api/login/local', passport.authenticate('local', { session: false }),
   });
 });
 
-app.post('/api/login/facebook', passport.authenticate('facebook-token', { session: false }), (req, res) => {
+app.post('/api/v1/login/facebook', passport.authenticate('facebook-token', { session: false }), (req, res) => {
   if(req.user.message) {
     return res.status(500).send(req.user.message);
   }
@@ -142,7 +142,7 @@ app.post('/api/login/facebook', passport.authenticate('facebook-token', { sessio
   });*/
 });
 
-app.post('/api/login/google', passport.authenticate('google-token', { session: false }), (req, res) => {
+app.post('/api/v1/login/google', passport.authenticate('google-token', { session: false }), (req, res) => {
   if(req.user.message) {
     return res.status(500).send(req.user.message);
   }
@@ -162,13 +162,37 @@ app.post('/api/login/google', passport.authenticate('google-token', { session: f
   });*/
 });
 
-app.get('/api/protected_data', verifyToken, (req, res) => {
+app.get('/api/v1/get_supermarkets', verifyToken, (req, res) => {
   jwt.verify(req.token, jwt_secret_key, (err, auth_data) => {
     if(err) {
-      return res.status(403).send('Forbidden');
+      // Commented line for debug only
+      // return res.status(403).send('Forbidden');
     }
+
     // get needed data
-    return res.json(auth_data);
+    client.query(queries.get_supermarkets(), (err, result) => {
+      if(err) {
+        return res.status(500).send('Internal server error.');
+      }
+      return res.status(200).json(result.rows);
+    });
+  });
+});
+
+app.get('/api/v1/get_products/:s_id', verifyToken, (req, res) => {
+  jwt.verify(req.token, jwt_secret_key, (err, auth_data) => {
+    if(err) {
+      // Commented line for debug only
+      // return res.status(403).send('Forbidden');
+    }
+
+    // get needed data
+    client.query(queries.get_products(req.params.s_id), (err, result) => {
+      if(err) {
+        return res.status(500).send('Internal server error.');
+      }
+      return res.status(200).json(result.rows);
+    });
   });
 });
 
@@ -196,16 +220,15 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
     });
   }
 ));
+// To implement
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET
   }, function(accessToken, refreshToken, profile, done) {
     return done(null, profile);
-    /*User.findOrCreate({facebookId: profile.id}, function (error, user) {
-      return done(error, user);
-    });*/
   }
 ));
+// To implement
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET
@@ -220,14 +243,17 @@ passport.use(new GoogleStrategy({
 
 // Verify JSON Web Token
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
+  next();
+  // Commented function for debug only.
+  // Uncomment once client-side login has been implemented and delete previous line.
+  /*const bearerHeader = req.headers['authorization'];
   if(bearerHeader) {
     req.token = bearerHeader.split(' ')[1];
     next();
   } else {
     res.status(403).send('Forbidden');
-  }
+  }*/
 }
 
 // Enjoy
-app.listen(5000, () => console.log('Server started on port 5000'));
+app.listen(8080, () => console.log('Server started on port 8080'));
