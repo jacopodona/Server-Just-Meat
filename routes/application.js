@@ -12,18 +12,28 @@ router.get('/get_supermarkets', verifyToken, (req, res) => {
     if (err) {
       // Commented line for debug only
       // return res.status(403).send('Forbidden');
-    } else {
-
-      
-
-      // get needed data
-      client.query(queries.get_supermarkets(), (err, result) => {
-        if (err) {
-          return res.status(500).send('Internal server error.');
-        }
-        return res.status(200).json(result.rows);
-      });
     }
+
+    let offset,limit;
+    
+    if (req.query.offset == undefined) {
+      offset=0;
+    }else{
+      offset=req.query.offset;
+    }
+    if (req.query.offset == undefined) {
+      limit=100000;//to do
+    }else{
+      limit = req.query.offset;
+    }
+    // get needed data
+    client.query(queries.get_supermarkets(offset,limit), (err, result) => {
+      if (err) {
+        return res.status(500).send('Internal server error.');
+      }
+      return res.status(200).json({"results":result.rows, metadata:{returned:result.rowCount, offset : parseInt(offset,10), limit : parseInt(limit,10)}});
+    });
+
 
 
   });

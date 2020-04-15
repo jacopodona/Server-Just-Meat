@@ -40,10 +40,12 @@ const get_user = (id) => {
   }
 }
 
-const get_supermarkets = () => {
+const get_supermarkets = (offset,limit) => {
   return {
-    text: 'SELECT * FROM supermarkets'
+    text: 'SELECT * FROM supermarkets limit $1 offset $2;',
+    values:[limit,offset]
   }
+
 }
 
 const get_products = (id) => {
