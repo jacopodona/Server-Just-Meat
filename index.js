@@ -7,8 +7,8 @@ require('./config/passport-config');
 require('./config/postgres-config');
 
 // Routes
-const auth = require('./api/auth');
-const application = require('./api/application');
+const auth = require('./routes/auth');
+const application = require('./routes/application');
 
 const app = express();
 
