@@ -48,10 +48,10 @@ const get_supermarkets = (offset,limit) => {
 
 }
 
-const get_products = (id) => {
+const get_products = (id,offset,limit) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, available, category, department, discount, image FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id WHERE S.id = $1',
-    values: [id]
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, available, category, department, discount, image FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id WHERE S.id = $1 limit $2 offset $3',
+    values: [id,offset,limit]
   }
 }
 

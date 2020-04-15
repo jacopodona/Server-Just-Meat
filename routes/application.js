@@ -22,7 +22,7 @@ router.get('/get_supermarkets', verifyToken, (req, res) => {
       offset=req.query.offset;
     }
     if (req.query.offset == undefined) {
-      limit=100000;//to do
+      limit=null;
     }else{
       limit = req.query.offset;
     }
@@ -46,8 +46,21 @@ router.get('/get_products/:s_id', verifyToken, (req, res) => {
       // return res.status(403).send('Forbidden');
     }
 
+    let offset,limit;
+    
+    if (req.query.offset == undefined) {
+      offset=0;
+    }else{
+      offset=req.query.offset;
+    }
+    if (req.query.offset == undefined) {
+      limit=null;
+    }else{
+      limit = req.query.offset;
+    }
+
     // get needed data
-    client.query(queries.get_products(req.params.s_id), (err, result) => {
+    client.query(queries.get_products(req.params.s_id, limit, offset), (err, result) => {
       if (err) {
         return res.status(500).send('Internal server error.');
       }
