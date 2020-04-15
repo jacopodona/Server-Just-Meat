@@ -53,10 +53,10 @@ router.get('/get_products/:s_id', verifyToken, (req, res) => {
     }else{
       offset=req.query.offset;
     }
-    if (req.query.offset == undefined) {
+    if (req.query.limit == undefined) {
       limit=null;
     }else{
-      limit = req.query.offset;
+      limit = req.query.limit;
     }
 
     // get needed data
@@ -64,7 +64,7 @@ router.get('/get_products/:s_id', verifyToken, (req, res) => {
       if (err) {
         return res.status(500).send('Internal server error.');
       }
-      return res.status(200).json(result.rows);
+      return res.status(200).json({"results":result.rows, metadata:{returned:result.rowCount, offset : parseInt(offset,10), limit : parseInt(limit,10)}});
     });
   });
 });
