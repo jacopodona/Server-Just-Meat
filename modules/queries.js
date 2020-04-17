@@ -55,6 +55,13 @@ const get_products = (id,limit,offset) => {
   }
 }
 
+const get_departments = (id_supermercato,limit,offset) => {
+  return {
+    text: 'SELECT d.name FROM has_department h JOIN department d on h.fk_department=d.id WHERE fk_supermarket = $1 limit $2 offset $3',
+    values: [id_supermercato,limit,offset]
+  }
+}
+
 const queries = {
   insert_user,
   insert_credentials,
@@ -63,7 +70,8 @@ const queries = {
   get_password_from_mail,
   get_user,
   get_supermarkets,
-  get_products
+  get_products,
+  get_departments
 }
 
 exports.queries = queries;

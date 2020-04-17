@@ -1,0 +1,1 @@
+pg_dump just_meat > dump.sql
