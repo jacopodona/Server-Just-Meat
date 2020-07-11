@@ -15,11 +15,10 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
   function(mail, psw, done) {
     client.query(queries.get_password_from_mail(mail), (err, result) => {
       if(err) return done(err);
-      if(!result) return done(null, { message: 'An user with such email is not registered.' });
-      if(result.rowCount === 0) return done(null, { message: 'Incorrect email.' });
+      if(result.rowCount === 0) return done(null, { message: 'Email non corretta.' });
       bcrypt.compare(psw, result.rows[0].hashed_password, (err, res) => {
         if(err) return done(err);
-        if(!res) return done(null, { message: 'Incorrect password.' });
+        if(!res) return done(null, { message: 'Password non corretta.' });
         client.query(queries.get_user(result.rows[0].fk_user), (err, res) => {
           if(err) return done(err)
           return done(null, {

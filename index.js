@@ -16,6 +16,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+app.post('/test', (req, res) => {
+  res.json({ code: 200, message: req.body.test + " from server!" });
+})
+
 app.use('/auth', auth);
 app.use('/api/v1', application);
 
