@@ -3,9 +3,11 @@ const { Client } = require('pg');
 const constants = require('./constants');
 
 // Database configuration
-const connection_string = constants.POSTGRES_CONNECTION_STRING;
 const client = new Client({
-  connectionString: connection_string,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 })
 client.connect();
 
