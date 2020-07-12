@@ -24,4 +24,4 @@ app.use('/auth', auth);
 app.use('/api/v1', application);
 
 // Enjoy
-app.listen(8080, () => console.log('Server started on port 8080'));
+app.listen(process.env.PORT || 5000)
