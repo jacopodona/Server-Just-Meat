@@ -33,9 +33,6 @@ router.get('/get_supermarkets', verifyToken, (req, res) => {
       }
       return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount, offset: parseInt(offset, 10), limit: parseInt(limit, 10) } });
     });
-
-
-
   });
 });
 
@@ -75,7 +72,6 @@ router.get('/get_departments/:s_id', verifyToken, (req, res) => {
       // Commented line for debug only
       // return res.status(403).send('Forbidden');
     }
-    console.log("cioa");
     let offset, limit;
 
     if (req.query.offset == undefined) {
