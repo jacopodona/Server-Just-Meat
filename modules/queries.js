@@ -48,16 +48,16 @@ const get_supermarkets = (offset,limit) => {
 
 }
 
-const get_products = (id,limit,offset) => {
+const get_products = (id_supermercato,limit,offset) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, available, category, department, discount, image FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id WHERE S.id = $1 limit $2 offset $3',
-    values: [id,limit,offset]
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufatcurer FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer WHERE S.id = $1 limit $2 offset $3',
+    values: [id_supermercato,limit,offset]
   }
 }
 
 const get_departments = (id_supermercato,limit,offset) => {
   return {
-    text: 'SELECT d.name FROM has_department h JOIN department d on h.fk_department=d.id WHERE fk_supermarket = $1 limit $2 offset $3',
+    text: 'SELECT DISTINCT D.name AS name, D.id AS id FROM departments D JOIN has_product H ON D.id = H.fk_department WHERE H.fk_supermarket = $1 limit $2 offset $3',
     values: [id_supermercato,limit,offset]
   }
 }
