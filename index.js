@@ -25,7 +25,11 @@ app.post('/test', (req, res) => {
 
 app.get('/authenticationtest', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
-    res.json({ code: 200, message: auth_data })
+    if(err) {
+      res.json({ code: 200, message: err })
+    } else {
+      res.json({ code: 200, message: auth_data })
+    }
   });
 })
 
