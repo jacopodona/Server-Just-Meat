@@ -95,5 +95,4 @@ router.get('/get_departments/:s_id', verifyToken, (req, res) => {
   });
 });
 
-
 module.exports = router;

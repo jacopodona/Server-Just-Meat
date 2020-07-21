@@ -22,6 +22,7 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
         client.query(queries.get_user(result.rows[0].fk_user), (err, res) => {
           if(err) return done(err)
           return done(null, {
+            id: result.rows[0].fk_user,
             name: res.rows[0].name,
             last_name: res.rows[0].last_name,
             address: res.rows[0].address,
