@@ -2,8 +2,6 @@ CREATE TABLE "users" (
 	"id" serial NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"last_name" VARCHAR(255) NOT NULL,
-	"address" VARCHAR(255) NOT NULL,
-	"birth_date" DATE NOT NULL,
 	"photo" VARCHAR(255) NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("id")
 ) WITH (
