@@ -197,10 +197,10 @@ ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk0" FOREIGN KEY ("fk_produc
 ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk1" FOREIGN KEY ("fk_weight") REFERENCES "weights"("id");
 
 
-COPY public.users (id, name, last_name, address, birth_date, photo) FROM stdin;
-1	Davide	Farina	Via Fratelli Perini, 159, 38122 Trento TN	1998-11-27	no_image
-2	Michele	Rigo	Piazza Lodron, 31, 38122 Trento TN	1999-01-12	no_image
-3	Gabriele	Pasquali	Via alla Pelegrina, 3, 38121, Trento TN	2000-08-30	no_image
+COPY public.users (id, name, last_name, photo) FROM stdin;
+1	Davide	Farina	no_image
+2	Michele	Rigo	no_image
+3	Gabriele	Pasquali	no_image
 \.
 
 
