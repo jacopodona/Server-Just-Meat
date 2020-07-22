@@ -15,8 +15,6 @@ router.post('/signup', (req, res) => {
     const user = {
       name: req.body.name,
       last_name: req.body.last_name,
-      address: req.body.address,
-      birth_date: req.body.birth_date.toString(),
       mail: req.body.mail,
       password: req.body.psw
     }
@@ -27,9 +25,7 @@ router.post('/signup', (req, res) => {
       || (user.password !== req.body.check_psw)
       || !user.name
       || !user.last_name
-      || !user.mail
-      || !user.birth_date
-      || !user.address)
+      || !user.mail)
       return res.status(500).send('Incorrect data.');
   
   
@@ -42,7 +38,7 @@ router.post('/signup', (req, res) => {
         return res.status(500).send('User with such mail already exists.');
       } else {
         // Insert user in database
-        client.query(queries.insert_user(user.name, user.last_name, user.address, user.birth_date), (err, result) => {
+        client.query(queries.insert_user(user.name, user.last_name), (err, result) => {
           if(err) {
             return res.status(500).send('An user with such email is already registered.');
           } else {

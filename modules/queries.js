@@ -1,7 +1,7 @@
-const insert_user = (name, last_name, address, birth_date) => {
+const insert_user = (name, last_name) => {
   return {
-    text: 'INSERT INTO users(name, last_name, address, birth_date) VALUES($1, $2, $3, $4) RETURNING id',
-    values: [name, last_name, address, birth_date]
+    text: 'INSERT INTO users(name, last_name) VALUES($1, $2) RETURNING id',
+    values: [name, last_name]
   }
 }
 
