@@ -31,6 +31,7 @@ CREATE TABLE "orders" (
 	"discount" DECIMAL NOT NULL,
 	"fk_supermarket" integer NOT NULL,
 	"fk_status" integer NOT NULL,
+	"fk_coupon" integer,
 	CONSTRAINT "orders_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -119,24 +120,62 @@ CREATE TABLE "manufacturers" (
 CREATE TABLE "shopping_cart" (
 	"fk_order" integer NOT NULL,
 	"fk_product" integer NOT NULL,
+	"fk_weight" integer NOT NULL,
 	"quantity" integer NOT NULL,
-	"weight" DECIMAL NOT NULL,
 	CONSTRAINT "shopping_cart_pk" PRIMARY KEY ("fk_order","fk_product")
 ) WITH (
   OIDS=FALSE
 );
 
 
+CREATE TABLE "love_products" (
+	"fk_user" integer NOT NULL,
+	"fk_product" integer NOT NULL,
+	CONSTRAINT "love_products_pk" PRIMARY KEY ("fk_user","fk_product")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "coupons" (
+	"id" integer NOT NULL,
+	"code" VARCHAR(255) NOT NULL,
+	"percentage" DECIMAL NOT NULL,
+	"used" boolean NOT NULL,
+	CONSTRAINT "coupons_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE "weights" (
+	"id" integer NOT NULL,
+	"um" VARCHAR(255) NOT NULL,
+	"value" integer NOT NULL,
+	CONSTRAINT "weights_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE "has_weight" (
+	"fk_product" integer NOT NULL,
+	"fk_weight" integer NOT NULL,
+	CONSTRAINT "has_weight_pk" PRIMARY KEY ("fk_product", "fk_weight")
+) WITH (
+  OIDS=FALSE
+);
 
 
 ALTER TABLE "credentials" ADD CONSTRAINT "credentials_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
 
 ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("fk_supermarket") REFERENCES "supermarkets"("id");
 ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("fk_status") REFERENCES "status"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("fk_coupon") REFERENCES "coupons"("id");
 
 ALTER TABLE "has_order" ADD CONSTRAINT "has_order_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
 ALTER TABLE "has_order" ADD CONSTRAINT "has_order_fk1" FOREIGN KEY ("fk_order") REFERENCES "orders"("id");
-
 
 
 ALTER TABLE "has_product" ADD CONSTRAINT "has_product_fk0" FOREIGN KEY ("fk_supermarket") REFERENCES "supermarkets"("id");
@@ -149,6 +188,16 @@ ALTER TABLE "products" ADD CONSTRAINT "products_fk0" FOREIGN KEY ("fk_manufactur
 
 ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_fk0" FOREIGN KEY ("fk_order") REFERENCES "orders"("id");
 ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_fk1" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
+ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_fk2" FOREIGN KEY ("fk_weight") REFERENCES "weights"("id");
+
+
+ALTER TABLE "love_products" ADD CONSTRAINT "love_products_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
+ALTER TABLE "love_products" ADD CONSTRAINT "love_products_fk1" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
+
+
+ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk0" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
+ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk1" FOREIGN KEY ("fk_weight") REFERENCES "weights"("id");
+
 
 COPY public.users (id, name, last_name, address, birth_date, photo) FROM stdin;
 1	Davide	Farina	Via Fratelli Perini, 159, 38122 Trento TN	1998-11-27	no_image
@@ -223,7 +272,7 @@ COPY public.products (id, name, price, barcode, discount, image, description, fk
 22	Chicken burger 0.2kg	2.98	to_implement	0.3	no_image	description	1
 23	Seppia pulita fresca 1kg	20.9	to_implement	0.3	no_image	description	1
 24	Spiedino di pesce 1kg	17.9	to_implement	0.2	no_image	description	1
-25	Trota salmonata 1kg	10.9	to_implement	0.15	no_image	description	1
+25	Trota salmonata	10.9	to_implement	0.15	no_image	description	1
 26	Orata fresca 1kg	8.5	to_implement	0.5	no_image	description	1
 \.
 
@@ -274,4 +323,44 @@ COPY public.status (id, name) FROM stdin;
 2	Pronto
 3	Ritirato
 \.
+
+
+COPY public.weights (id, um, value) FROM stdin;
+1	Litri	1
+2	Grammi	100
+3	Grammi	150
+4	Grammi	200
+\.
+
+COPY public.has_weight (fk_product, fk_weight) FROM stdin;
+1	1
+2	1
+3	1
+4	1
+5	1
+6	1
+7	1
+8	1
+9	1
+10	1
+11	1
+12	1
+13	1
+14	1
+15	1
+16	1
+17	1
+18	1
+19	1
+20	1
+21	1
+22	1
+23	1
+24	1
+25	2
+25	3
+25	4
+26	1
+\.
+
 

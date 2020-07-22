@@ -33,3 +33,42 @@ Link Heroku: `http://just-feet.herokuapp.com`
 ```
 - **POST** `/auth/login/google`: to implement
 - **POST** `/auth/login/facebook`: to implement
+
+## Uso su Android Studio
+
+È possibile effettuare le chiamate http con la libreria `com.example.justmeat.utilities.HttpJsonRequest`.
+
+La classe offre quattro costruttori, i quali si differenziano per la presenza/assenza di due parametri: la stringa `token`, che viene fornita al momento dell'autenticazione ed è necessaria per accedere alle API che forniscono i dati, e il JSONObject `body`, che contiene eventuali informazioni (es: i dati del form del login).
+
+I quattro costruttori hanno i seguenti parametri:
+- `Context context`: contesto;
+- `String partialUrl`: l'API da richiamare, ad esempio "/api/v1/get_supermarkets";
+- `int method`: metodo HTTP da richiamare, ad esempio "Request.Method.POST";
+- `JSONObject body`: JSONObject contenente il body della richiesta Http **[OPZIONALE]**;
+- `String token`: token dato dall'autenticazione **[OPZIONALE]**;
+- `Response.Listener<JSONObject> onResponse`: callback chiamata al momento della risposta del server;
+- `Response.ErrorListener onError`: callback chiamata in caso d'errore.
+
+Un esempio di chiamata può essere il seguente:
+
+```Java
+    try {
+        JSONObject body = new JSONObject();
+        body.put("test", "Hello");
+        new HttpJsonRequest(this, "/test", Request.Method.POST, body,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    // Do something within context
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // An error occurred
+                }
+            }
+        ).run();
+    } catch(JSONException ex) {
+       return;
+    }
+```
