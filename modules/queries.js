@@ -1,6 +1,6 @@
 const insert_user = (name, last_name) => {
   return {
-    text: 'INSERT INTO users(name, last_name) VALUES($1, $2) RETURNING id',
+    text: 'INSERT INTO users(name, last_name, photo) VALUES($1, $2, \'no_image\') RETURNING id',
     values: [name, last_name]
   }
 }

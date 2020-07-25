@@ -26,34 +26,34 @@ router.post('/signup', (req, res) => {
       || !user.name
       || !user.last_name
       || !user.mail)
-      return res.status(500).send('Incorrect data.');
+      return res.status(200).json({ code: 500, message: 'Incorrect data.' });
   
   
     // Check if user already exists
     client.query(queries.exists_user(user.mail), (err, result) => {
       if(err) {
-        return res.status(500).send(err.message);
+        return res.status(200).json({ code: 500, message: err.message });
       } else if (result.rows[0].count >= 1) {
         // User with such mail already exists
-        return res.status(500).send('User with such mail already exists.');
+        return res.status(200).json({ code: 500, message: 'User with such mail already exists.'});
       } else {
         // Insert user in database
         client.query(queries.insert_user(user.name, user.last_name), (err, result) => {
           if(err) {
-            return res.status(500).send('An user with such email is already registered.');
+            return res.status(200).json({ code: 500, message: 'An user with such email is already registered.' });
           } else {
             const user_id = result.rows[0].id;
             // Hash its password
             bcrypt.hash(user.password, constants.SALT_ROUNDS, (err, hash) => {
               if(err) {
-                return res.status(500).send('Couldn\'t properly compute an hash.');
+                return res.status(200).json({ code: 500, message: 'Couldn\'t properly compute an hash.' });
               } else {
                 // Insert credentials in database
                 client.query(queries.insert_credentials(user_id, hash, user.mail), (err, result) => {
                   if(err) {
-                    return res.status(500).send('Couldn\'t insert credentials in database.');
+                    return res.status(200).json({ code: 500, message: 'Couldn\'t insert credentials in database.'});
                   } else {
-                    return res.status(200).send('OK.');
+                    return res.status(200).json({ code: 200, message: 'OK.' });
                   }
                 });
               }
