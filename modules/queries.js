@@ -35,7 +35,7 @@ const get_password_from_mail = (mail) => {
 
 const get_user = (id) => {
   return {
-    text: 'SELECT * FROM users WHERE id = $1',
+    text: 'SELECT U.name AS name, U.last_name AS last_name, U.photo AS photo, C.mail AS mail FROM users U JOIN credentials C ON U.id=C.fk_user WHERE U.id = $1',
     values: [id]
   }
 }

@@ -25,8 +25,6 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
             id: result.rows[0].fk_user,
             name: res.rows[0].name,
             last_name: res.rows[0].last_name,
-            address: res.rows[0].address,
-            birth_date: res.rows[0].birth_date.toString(),
             mail: mail,
           });
         });
