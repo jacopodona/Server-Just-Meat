@@ -10,8 +10,7 @@ const { verifyToken } = require('../modules/utilities');
 router.get('/get_supermarkets', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
-      // Commented line for debug only
-      // return res.status(403).send('Forbidden');
+      return res.status(403).send('Forbidden');
     }
 
     let offset, limit;
@@ -39,8 +38,7 @@ router.get('/get_supermarkets', verifyToken, (req, res) => {
 router.get('/get_products/:s_id', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
-      // Commented line for debug only
-      // return res.status(403).send('Forbidden');
+      return res.status(403).send('Forbidden');
     }
 
     let offset, limit;
@@ -69,8 +67,7 @@ router.get('/get_products/:s_id', verifyToken, (req, res) => {
 router.get('/get_departments/:s_id', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
-      // Commented line for debug only
-      // return res.status(403).send('Forbidden');
+      return res.status(403).send('Forbidden');
     }
     let offset, limit;
 
