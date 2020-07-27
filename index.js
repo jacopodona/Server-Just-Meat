@@ -37,4 +37,4 @@ app.use('/auth', auth);
 app.use('/api/v1', application);
 
 // Enjoy
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 8080)

@@ -1,5 +1,8 @@
+CREATE SEQUENCE users_id_seq AS integer;
+CREATE SEQUENCE orders_id_seq AS integer;
+
 CREATE TABLE "users" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL DEFAULT nextval('users_id_seq'),
 	"name" VARCHAR(255) NOT NULL,
 	"last_name" VARCHAR(255) NOT NULL,
 	"photo" VARCHAR(255) NOT NULL,
@@ -22,7 +25,7 @@ CREATE TABLE "credentials" (
 
 
 CREATE TABLE "orders" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL DEFAULT nextval('users_id_seq'),
 	"creation_date" TIMESTAMP NOT NULL,
 	"pickup_time" TIMESTAMP NOT NULL,
 	"amount" integer NOT NULL,
@@ -48,7 +51,7 @@ CREATE TABLE "has_order" (
 
 
 CREATE TABLE "status" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	CONSTRAINT "status_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -58,7 +61,7 @@ CREATE TABLE "status" (
 
 
 CREATE TABLE "supermarkets" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"address" VARCHAR(255) NOT NULL,
 	CONSTRAINT "supermarkets_pk" PRIMARY KEY ("id")
@@ -80,7 +83,7 @@ CREATE TABLE "has_product" (
 
 
 CREATE TABLE "departments" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	CONSTRAINT "departments_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -90,7 +93,7 @@ CREATE TABLE "departments" (
 
 
 CREATE TABLE "products" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"price" DECIMAL NOT NULL,
 	"barcode" VARCHAR(255) NOT NULL,
@@ -106,7 +109,7 @@ CREATE TABLE "products" (
 
 
 CREATE TABLE "manufacturers" (
-	"id" serial NOT NULL,
+	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	CONSTRAINT "manufacturers_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -195,6 +198,11 @@ ALTER TABLE "love_products" ADD CONSTRAINT "love_products_fk1" FOREIGN KEY ("fk_
 
 ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk0" FOREIGN KEY ("fk_product") REFERENCES "products"("id");
 ALTER TABLE "has_weight" ADD CONSTRAINT "has_weight_fk1" FOREIGN KEY ("fk_weight") REFERENCES "weights"("id");
+
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
+
 
 
 COPY public.users (id, name, last_name, photo) FROM stdin;
@@ -362,3 +370,4 @@ COPY public.has_weight (fk_product, fk_weight) FROM stdin;
 \.
 
 
+ALTER SEQUENCE users_id_seq RESTART WITH 4;
