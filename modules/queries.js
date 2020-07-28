@@ -26,6 +26,13 @@ const exists_user = (mail) => {
   }
 }
 
+const get_user_id = (mail) => {
+  return {
+    text: 'SELECT fk_user AS id FROM credentials WHERE mail = $1',
+    values: [mail]
+  }
+}
+
 const get_password_from_mail = (mail) => {
   return {
     text: 'SELECT fk_user, hashed_password FROM credentials WHERE mail = $1',
@@ -67,6 +74,7 @@ const queries = {
   insert_credentials,
   delete_user,
   exists_user,
+  get_user_id,
   get_password_from_mail,
   get_user,
   get_supermarkets,

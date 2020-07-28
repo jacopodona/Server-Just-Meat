@@ -11,7 +11,7 @@ const { queries } = require('../modules/queries');
 const constants = require('./constants');
 
 // Strategies
-passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
+passport.use('local', new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
   function(mail, psw, done) {
     client.query(queries.get_password_from_mail(mail), (err, result) => {
       if(err) return done(err);
@@ -32,23 +32,33 @@ passport.use(new LocalStrategy({ usernameField: 'mail', passwordField: 'psw' },
     });
   }
 ));
-// To implement
-passport.use(new FacebookStrategy({
-    clientID: constants.FACEBOOK_APP_ID,
-    clientSecret: constants.FACEBOOK_APP_SECRET
-  }, function(accessToken, refreshToken, profile, done) {
-    return done(null, profile);
+
+passport.use('provider', new LocalStrategy({ usernameField: 'mail', passwordField: 'id' },
+  function(mail, psw, done) {
+    client.query(queries.get_user_id(mail), (err, result) => {
+      if(err) return done(err);
+      done(null, { id: (result.rows[0]  ? result.rows[0].id : -1) });
+    });
   }
 ));
-// To implement
-passport.use(new GoogleStrategy({
-    clientID: constants.GOOGLE_CLIENT_ID,
-    clientSecret: constants.GOOGLE_CLIENT_SECRET
-  }, function(accessToken, refreshToken, profile, done) {
-    fetchGoogleUser(profile, accessToken)
-      .then((user) => done(null, user))
-      .catch((err) => {
-        return done(err)
-      });
-  }
-));
+
+// // To implement
+// passport.use(new FacebookStrategy({
+//     clientID: constants.FACEBOOK_APP_ID,
+//     clientSecret: constants.FACEBOOK_APP_SECRET
+//   }, function(accessToken, refreshToken, profile, done) {
+//     return done(null, profile);
+//   }
+// ));
+// // To implement
+// passport.use(new GoogleStrategy({
+//     clientID: constants.GOOGLE_CLIENT_ID,
+//     clientSecret: constants.GOOGLE_CLIENT_SECRET
+//   }, function(accessToken, refreshToken, profile, done) {
+//     fetchGoogleUser(profile, accessToken)
+//       .then((user) => done(null, user))
+//       .catch((err) => {
+//         return done(err)
+//       });
+//   }
+// ));
