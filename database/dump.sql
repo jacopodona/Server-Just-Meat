@@ -29,7 +29,6 @@ CREATE TABLE "orders" (
 	"creation_date" TIMESTAMP NOT NULL,
 	"pickup_time" TIMESTAMP NOT NULL,
 	"amount" integer NOT NULL,
-	"discount" DECIMAL NOT NULL,
 	"fk_supermarket" integer NOT NULL,
 	"fk_status" integer NOT NULL,
 	CONSTRAINT "orders_pk" PRIMARY KEY ("id")
@@ -96,6 +95,7 @@ CREATE TABLE "products" (
 	"name" VARCHAR(255) NOT NULL,
 	"price" DECIMAL NOT NULL,
 	"barcode" VARCHAR(255) NOT NULL,
+	"discount" DECIMAL NOT NULL,
 	"image" VARCHAR(255) NOT NULL,
 	"description" VARCHAR(255) NOT NULL,
 	"fk_manufacturer" integer NOT NULL,
@@ -262,33 +262,33 @@ COPY public.departments (id, name) FROM stdin;
 
 
 
-COPY public.products (id, name, price, barcode, image, description, fk_manufacturer) FROM stdin;
-1	Tisana bio	5.50	to_implement	no_image	description	1
-2	Lattuga nostrana bio 0.5kg	2.50	to_implement	no_image	description	1
-3	Peperoni nostrani bio 0.5kg	2.30	to_implement	no_image	description	1
-4	Formaggio casolet 0.4kg	4.25	to_implement	no_image	description	1
-5	Formaggio Trentingrana 1.5kg	9.60	to_implement	no_image	description	1
-6	Speck Alto-Adige 0.2kg	2.20	to_implement	no_image	description	1
-7	Soppressa nostrana 0.2kg	2.65	to_implement	no_image	description	1
-8	Tè alla pesca San Benedetto 1.5l	1.50	to_implement	no_image	description	1
-9	Yogurt Mila	0.25	to_implement	no_image	description	1
-10	Pizza surgelata Buitoni	3.25	to_implement	no_image	description	1
-11	Ananas	1.99	to_implement	no_image	description	1
-12	Pere william 1kg	2.99	to_implement	no_image	description	1
-13	Fragole in vaschetta 0.5kg	1.5	to_implement	no_image	description	1
-14	Finocchio 1kg	1.8	to_implement	no_image	description	1
-15	Insalata misticanza 0.125kg	1.3	to_implement	no_image	description	1
-16	Insalata arcobaleno 0.5kg	2.29	to_implement	no_image	description	1
-17	Zucchine 1kg	2.39	to_implement	no_image	description	1
-18	Tagliata di bovino adulta 0.5kg	17.50	to_implement	no_image	description	1
-19	Fette sceltissime di vitello 0.5kg	23.9	to_implement	no_image	description	1
-20	Spiedini di pollo x4 0.5kg	11.9	to_implement	no_image	description	1
-21	Lonza di suino 0.5kg	8.8	to_implement	no_image	description	1
-22	Chicken burger 0.2kg	2.98	to_implement	no_image	description	1
-23	Seppia pulita fresca 1kg	20.9	to_implement	no_image	description	1
-24	Spiedino di pesce 1kg	17.9	to_implement	no_image	description	1
-25	Trota salmonata	10.9	to_implement	no_image	description	1
-26	Orata fresca 1kg	8.5	to_implement	no_image	description	1
+COPY public.products (id, name, price, barcode, discount, image, description, fk_manufacturer) FROM stdin;
+1	Tisana bio	5.50	to_implement	0	no_image	description	1
+2	Lattuga nostrana bio 0.5kg	2.50	to_implement	0.40	no_image	description	1
+3	Peperoni nostrani bio 0.5kg	2.30	to_implement	0.40	no_image	description	1
+4	Formaggio casolet 0.4kg	4.25	to_implement	0.40	no_image	description	1
+5	Formaggio Trentingrana 1.5kg	9.60	to_implement	0.40	no_image	description	1
+6	Speck Alto-Adige 0.2kg	2.20	to_implement	0.40	no_image	description	1
+7	Soppressa nostrana 0.2kg	2.65	to_implement	0.40	no_image	description	1
+8	Tè alla pesca San Benedetto 1.5l	1.50	to_implement	0.40	no_image	description	1
+9	Yogurt Mila	0.25	to_implement	0.40	no_image	description	1
+10	Pizza surgelata Buitoni	3.25	to_implement	0	no_image	description	1
+11	Ananas	1.99	to_implement	0	no_image	description	1
+12	Pere william 1kg	2.99	to_implement	0	no_image	description	1
+13	Fragole in vaschetta 0.5kg	1.5	to_implement	0	no_image	description	1
+14	Finocchio 1kg	1.8	to_implement	0.30	no_image	description	1
+15	Insalata misticanza 0.125kg	1.3	to_implement	0.20	no_image	description	1
+16	Insalata arcobaleno 0.5kg	2.29	to_implement	0.40	no_image	description	1
+17	Zucchine 1kg	2.39	to_implement	0.50	no_image	description	1
+18	Tagliata di bovino adulta 0.5kg	17.50	to_implement	0.30	no_image	description	1
+19	Fette sceltissime di vitello 0.5kg	23.9	to_implement	0.20	no_image	description	1
+20	Spiedini di pollo x4 0.5kg	11.9	to_implement	0.40	no_image	description	1
+21	Lonza di suino 0.5kg	8.8	to_implement	0.40	no_image	description	1
+22	Chicken burger 0.2kg	2.98	to_implement	0.40	no_image	description	1
+23	Seppia pulita fresca 1kg	20.9	to_implement	0.80	no_image	description	1
+24	Spiedino di pesce 1kg	17.9	to_implement	0.70	no_image	description	1
+25	Trota salmonata	10.9	to_implement	0.60	no_image	description	1
+26	Orata fresca 1kg	8.5	to_implement	0.20	no_image	description	1
 \.
 
 
