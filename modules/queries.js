@@ -47,25 +47,46 @@ const get_user = (id) => {
   }
 }
 
-const get_supermarkets = (offset,limit) => {
+const get_supermarkets = (offset, limit) => {
   return {
     text: 'SELECT * FROM supermarkets limit $1 offset $2;',
-    values:[limit,offset]
+    values: [limit, offset]
   }
 
 }
 
-const get_products = (id_supermercato,limit,offset) => {
+const get_products = (id_supermercato, limit, offset) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufatcurer FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer WHERE S.id = $1 limit $2 offset $3',
-    values: [id_supermercato,limit,offset]
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufatcurer, W.um AS um, MIN(W.value) AS weight FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um limit $2 offset $3',
+    values: [id_supermercato, limit, offset]
   }
 }
 
-const get_departments = (id_supermercato,limit,offset) => {
+const get_weights = (id_prodotto, limit, offset) => {
+  return {
+    text: 'SELECT W.id AS id, W.value AS value, W.um AS um FROM weights W JOIN has_weight H ON H.fk_weight=W.id JOIN products P ON P.id=H.fk_product WHERE P.id=$1 limit $2 offset $3',
+    values: [id_prodotto, limit, offset]
+  }
+}
+
+const add_favourite = (id_utente, id_prodotto) => {
+  return {
+    text: 'INSERT INTO love_products(fk_user, fk_product) VALUES($1, $2)',
+    values: [id_utente, id_prodotto]
+  }
+}
+
+const del_favourite = (id_utente, id_prodotto) => {
+  return {
+    text: 'DELETE FROM love_products WHERE fk_user=$1 AND fk_product=$2',
+    values: [id_utente, id_prodotto]
+  }
+}
+
+const get_departments = (id_supermercato, limit, offset) => {
   return {
     text: 'SELECT DISTINCT D.name AS name, D.id AS id FROM departments D JOIN has_product H ON D.id = H.fk_department WHERE H.fk_supermarket = $1 limit $2 offset $3',
-    values: [id_supermercato,limit,offset]
+    values: [id_supermercato, limit, offset]
   }
 }
 
@@ -79,7 +100,10 @@ const queries = {
   get_user,
   get_supermarkets,
   get_products,
-  get_departments
+  get_departments,
+  get_weights,
+  add_favourite,
+  del_favourite
 }
 
 exports.queries = queries;

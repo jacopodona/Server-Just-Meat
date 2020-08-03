@@ -8,6 +8,21 @@ Link Heroku: `http://just-feet.herokuapp.com`
 - **GET** `/api/v1/get_supermarkets`: get all supermarkets;
 - **GET** `/api/v1/get_products/:s_id`: get products by id;
 - **GET** `/api/v1/get_departments/:s_id`: get all departments of a supermarket;
+- **GET** `/api/v1/get_weights/:p_id`: get all weights for a product;
+- **POST** `/api/v1/add_favourite`: inserts a favourite item:
+```
+{
+  uid: 1,
+  pid: 1
+}
+```
+- **POST** `/api/v1/del_favourite`: removes a favourite item:
+```
+{
+  uid: 1,
+  pid: 1
+}
+```
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body:
