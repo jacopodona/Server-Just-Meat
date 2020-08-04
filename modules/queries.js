@@ -111,6 +111,13 @@ const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
   }
 }
 
+const get_coupon = (codice) => {
+  return {
+    text: 'SELECT * FROM coupons C LEFT JOIN has_coupon H ON C.id = H.fk_coupon WHERE C.code = $1',
+    values: [codice]
+  }
+}
+
 const add_coupon = (id_ordine, id_coupon) => {
   return {
     text: 'INSERT INTO has_coupon(fk_order, fk_coupon) VALUES($1, $2)',
@@ -142,6 +149,7 @@ const queries = {
   add_order,
   add_has_order,
   add_to_shopping_cart,
+  get_coupon,
   add_coupon,
   update_order
 }

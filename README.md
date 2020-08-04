@@ -15,13 +15,13 @@ Link Heroku: `http://just-feet.herokuapp.com`
   product_id: -1
 }
 ```
-- **POST** `/api/v1/del_favourite`: removes a favourite item:
+- **POST** `/api/v1/del_favourite`: removes a favourite item;
 ```
 {
   product_id: -1
 }
 ```
-- **POST** `/api/v1/add_order`: adds an order (status = "suspended"):
+- **POST** `/api/v1/add_order`: adds an order;
 ```
 {
   pickup_time: "",
@@ -35,24 +35,18 @@ Link Heroku: `http://just-feet.herokuapp.com`
     {
       ...
     }
+  ],
+  coupons: [
+    "",
+    "",
+    ...
   ]
 }
 ```
-- **POST** `/api/v1/confirm_order`: sets an order's status to "received":
-```
-{
-  order_id: -1
-}
-```
-- **POST** `/api/v1/add_coupon`: adds a coupon to an order, if not already used, does nothing otherwise:
-```
-{
-  order_id: -1
-}
-```
+- **GET** `/api/v1/get_coupon/:code`: returns id and discount for a coupon, if not already used;
 
 #### Authentication
-- **POST** `/auth/signup`: for local signup, expects a JSON body:
+- **POST** `/auth/signup`: for local signup, expects a JSON body;
 
 ```
 {
@@ -66,15 +60,15 @@ Link Heroku: `http://just-feet.herokuapp.com`
 }
 ```
 
-- **POST** `/auth/login/local`: for local login, expects a JSON body:
+- **POST** `/auth/login/local`: for local login, expects a JSON body;
 ```
 {
   mail: "",
   psw: ""
 }
 ```
-- **POST** `/auth/login/google`: to implement
-- **POST** `/auth/login/facebook`: to implement
+- **POST** `/auth/login/google`: to implement;
+- **POST** `/auth/login/facebook`: to implement;
 
 ## Uso su Android Studio
 

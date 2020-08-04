@@ -168,6 +168,7 @@ router.post('/add_order', verifyToken, (req, res) => {
           return res.status(500).json({ "Error message": "Internal server error:"+err });
         }
         const products = req.body.shopping_cart;
+        const coupons = req.body.coupons;
         let i = 0;
         for(i = 0; i < products.length; i++) {
           client.query(queries.add_to_shopping_cart(order_id, products[i].fk_product, products[i].fk_weight, products[i].quantity), (err, result) => {
@@ -179,38 +180,41 @@ router.post('/add_order', verifyToken, (req, res) => {
         if(i === products.length + 1) {
           return res.status(500).json({ "Error message": "Internal server error:"+err });
         }
+
+        if(coupons) {
+          i = 0;
+          for(i = 0; i < coupons.length; i++) {
+            client.query(queries.add_coupon(order_id, coupons[i]), (err, result) => {
+              if(err) {
+                i = coupons.length + 1;
+              }
+            })
+          }
+          if(i === coupons.length + 1) {
+            return res.status(500).json({ "Error message": "Internal server error:"+err });
+          }
+        }
+
         return res.status(200).json({ "results": result.rows });
       });
     });
   });
 });
 
-router.post('/confirm_order', verifyToken, (req, res) => {
+router.get('/get_coupon/:code', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
       return res.status(403).send('Forbidden');
     }
 
-    client.query(queries.update_order(req.body.order_id, 2), (err, result) => {
-      if (err) {
+    client.query(queries.get_coupon(req.params.code), (err, result) => {
+      if(err) {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
-      return res.status(200).json({ message: "OK." });
-    });
-  });
-});
-
-router.post('/add_coupon', verifyToken, (req, res) => {
-  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
-    if (err) {
-      return res.status(403).send('Forbidden');
-    }
-
-    client.query(queries.add_coupon(req.body.order_id, req.body.coupon_id), (err, result) => {
-      if(err) {
-        return res.status(200).json({ message: "Coupon already used." });
+      if(result.length == 0) {
+        return res.status(200).json({ code: 200, value: -1 });
       }
-      return res.status(200).json({ message: "OK." });
+      return res.status(200).json({ code: 200, value: (result.rows[0].fk_order != null ? -1 : result.rows[0].percentage) });
     });
   });
 });

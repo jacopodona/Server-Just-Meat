@@ -138,7 +138,7 @@ CREATE TABLE "love_products" (
 
 CREATE TABLE "coupons" (
 	"id" integer NOT NULL,
-	"code" VARCHAR(255) NOT NULL,
+	"code" VARCHAR(255) UNIQUE NOT NULL,
 	"percentage" DECIMAL NOT NULL,
 	CONSTRAINT "coupons_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -330,21 +330,27 @@ COPY public.has_product (fk_supermarket, fk_product, fk_department) FROM stdin;
 \.
 
 
+COPY public.coupons (id, code, percentage) FROM stdin;
+1	abc	0.2
+2	def	0.4
+3	ghi	0.5
+\.
+
 
 COPY public.status (id, name) FROM stdin;
-1	Sospeso
-2	Ricevuto
-3	Pronto
-4	Ritirato
+1	Ricevuto
+2	Pronto
+3	Ritirato
 \.
 
 
 COPY public.weights (id, um, value) FROM stdin;
-1	Litri	1
-2	Grammi	100
-3	Grammi	150
-4	Grammi	200
+1	ml	1000
+2	g	100
+3	g	150
+4	g	200
 \.
+
 
 COPY public.has_weight (fk_product, fk_weight) FROM stdin;
 1	1
