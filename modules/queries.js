@@ -57,7 +57,7 @@ const get_supermarkets = (offset, limit) => {
 
 const get_products = (id_supermercato, limit, offset) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufacturer, W.um AS um, MIN(W.value) AS weight FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um limit $2 offset $3',
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufacturer, W.um AS um, MIN(W.value) AS weight, W.id AS fk_weight FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um, W.id limit $2 offset $3',
     values: [id_supermercato, limit, offset]
   }
 }
@@ -113,15 +113,15 @@ const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
 
 const get_coupon = (codice) => {
   return {
-    text: 'SELECT * FROM coupons C LEFT JOIN has_coupon H ON C.id = H.fk_coupon WHERE C.code = $1',
+    text: 'SELECT * FROM coupons C LEFT JOIN has_coupon H ON C.code = H.fk_coupon WHERE C.code = $1',
     values: [codice]
   }
 }
 
-const add_coupon = (id_ordine, id_coupon) => {
+const add_coupon = (id_ordine, code_coupon) => {
   return {
     text: 'INSERT INTO has_coupon(fk_order, fk_coupon) VALUES($1, $2)',
-    values: [id_ordine, id_coupon]
+    values: [id_ordine, code_coupon]
   }
 }
 

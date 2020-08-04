@@ -137,10 +137,9 @@ CREATE TABLE "love_products" (
 
 
 CREATE TABLE "coupons" (
-	"id" integer NOT NULL,
-	"code" VARCHAR(255) UNIQUE NOT NULL,
+	"code" VARCHAR(255) NOT NULL,
 	"percentage" DECIMAL NOT NULL,
-	CONSTRAINT "coupons_pk" PRIMARY KEY ("id")
+	CONSTRAINT "coupons_pk" PRIMARY KEY ("code")
 ) WITH (
   OIDS=FALSE
 );
@@ -167,7 +166,7 @@ CREATE TABLE "has_weight" (
 
 CREATE TABLE "has_coupon" (
 	"fk_order" integer NOT NULL,
-	"fk_coupon" integer NOT NULL,
+	"fk_coupon" VARCHAR(255) NOT NULL,
 	CONSTRAINT "has_coupon_pk" PRIMARY KEY ("fk_order", "fk_coupon")
 ) WITH (
   OIDS=FALSE
@@ -180,7 +179,7 @@ ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("fk_supermarket") 
 ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("fk_status") REFERENCES "status"("id");
 
 ALTER TABLE "has_coupon" ADD CONSTRAINT "has_coupon_fk0" FOREIGN KEY ("fk_order") REFERENCES "orders"("id");
-ALTER TABLE "has_coupon" ADD CONSTRAINT "has_coupon_fk1" FOREIGN KEY ("fk_coupon") REFERENCES "coupons"("id");
+ALTER TABLE "has_coupon" ADD CONSTRAINT "has_coupon_fk1" FOREIGN KEY ("fk_coupon") REFERENCES "coupons"("code");
 
 ALTER TABLE "has_order" ADD CONSTRAINT "has_order_fk0" FOREIGN KEY ("fk_user") REFERENCES "users"("id");
 ALTER TABLE "has_order" ADD CONSTRAINT "has_order_fk1" FOREIGN KEY ("fk_order") REFERENCES "orders"("id");
@@ -330,10 +329,10 @@ COPY public.has_product (fk_supermarket, fk_product, fk_department) FROM stdin;
 \.
 
 
-COPY public.coupons (id, code, percentage) FROM stdin;
-1	abc	0.2
-2	def	0.4
-3	ghi	0.5
+COPY public.coupons (code, percentage) FROM stdin;
+abc	0.2
+def	0.4
+ghi	0.5
 \.
 
 

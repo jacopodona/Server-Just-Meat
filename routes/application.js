@@ -194,7 +194,6 @@ router.post('/add_order', verifyToken, (req, res) => {
             return res.status(500).json({ "Error message": "Internal server error:"+err });
           }
         }
-
         return res.status(200).json({ "results": result.rows });
       });
     });
@@ -211,8 +210,8 @@ router.get('/get_coupon/:code', verifyToken, (req, res) => {
       if(err) {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
-      if(result.length == 0 || result.rows[0].fk_order != null) return res.status(200).json({ code: 200, value: -1 });
-      return res.status(200).json({ code: 200, value: result.rows[0] });
+      if(result.length == 0 || result.rows[0].fk_order != null) return res.status(200).json({ code: 500, discount: -1.0 });
+      return res.status(200).json({ code: 200, percentage: result.rows[0].percentage });
     });
   });
 });
