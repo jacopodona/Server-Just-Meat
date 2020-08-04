@@ -211,10 +211,8 @@ router.get('/get_coupon/:code', verifyToken, (req, res) => {
       if(err) {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
-      if(result.length == 0) {
-        return res.status(200).json({ code: 200, value: -1 });
-      }
-      return res.status(200).json({ code: 200, value: (result.rows[0].fk_order != null ? -1 : result.rows[0].percentage) });
+      if(result.length == 0 || result.rows[0].fk_order != null) return res.status(200).json({ code: 200, value: -1 });
+      return res.status(200).json({ code: 200, value: result.rows[0] });
     });
   });
 });
