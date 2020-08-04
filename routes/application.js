@@ -127,7 +127,7 @@ router.post('/add_favourite', verifyToken, (req, res) => {
     }
 
     // get needed data
-    client.query(queries.add_favourite(req.body.uid, req.body.pid), (err, result) => {
+    client.query(queries.add_favourite(auth_data.id, req.body.product_id), (err, result) => {
       if (err) {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
@@ -143,11 +143,74 @@ router.post('/del_favourite', verifyToken, (req, res) => {
     }
 
     // get needed data
-    client.query(queries.del_favourite(req.body.uid, req.body.pid), (err, result) => {
+    client.query(queries.del_favourite(auth_data.id, req.body.product_id), (err, result) => {
       if (err) {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
       return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount } });
+    });
+  });
+});
+
+router.post('/add_order', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.add_order(new Date(), req.body.pickup_time, req.body.supermarket_id), (err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      const order_id = result.rows[0].id;
+      client.query(queries.add_has_order(auth_data.id, order_id), (err, result) => {
+        if (err) {
+          return res.status(500).json({ "Error message": "Internal server error:"+err });
+        }
+        const products = req.body.shopping_cart;
+        let i = 0;
+        for(i = 0; i < products.length; i++) {
+          client.query(queries.add_to_shopping_cart(order_id, products[i].fk_product, products[i].fk_weight, products[i].quantity), (err, result) => {
+            if(err) {
+              i = products.length + 1;
+            }
+          })
+        }
+        if(i === products.length + 1) {
+          return res.status(500).json({ "Error message": "Internal server error:"+err });
+        }
+        return res.status(200).json({ "results": result.rows });
+      });
+    });
+  });
+});
+
+router.post('/confirm_order', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.update_order(req.body.order_id, 2), (err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      return res.status(200).json({ message: "OK." });
+    });
+  });
+});
+
+router.post('/add_coupon', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.add_coupon(req.body.order_id, req.body.coupon_id), (err, result) => {
+      if(err) {
+        return res.status(200).json({ message: "Coupon already used." });
+      }
+      return res.status(200).json({ message: "OK." });
     });
   });
 });

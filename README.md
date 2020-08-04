@@ -12,15 +12,42 @@ Link Heroku: `http://just-feet.herokuapp.com`
 - **POST** `/api/v1/add_favourite`: inserts a favourite item:
 ```
 {
-  uid: 1,
-  pid: 1
+  product_id: -1
 }
 ```
 - **POST** `/api/v1/del_favourite`: removes a favourite item:
 ```
 {
-  uid: 1,
-  pid: 1
+  product_id: -1
+}
+```
+- **POST** `/api/v1/add_order`: adds an order (status = "suspended"):
+```
+{
+  pickup_time: "",
+  supermarket_id: -1,
+  shopping_cart: [
+    {
+      fk_product: -1,
+      fk_weight: -1,
+      quantity: -1
+    },
+    {
+      ...
+    }
+  ]
+}
+```
+- **POST** `/api/v1/confirm_order`: sets an order's status to "received":
+```
+{
+  order_id: -1
+}
+```
+- **POST** `/api/v1/add_coupon`: adds a coupon to an order, if not already used, does nothing otherwise:
+```
+{
+  order_id: -1
 }
 ```
 

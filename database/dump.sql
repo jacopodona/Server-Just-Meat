@@ -25,10 +25,9 @@ CREATE TABLE "credentials" (
 
 
 CREATE TABLE "orders" (
-	"id" integer NOT NULL DEFAULT nextval('users_id_seq'),
+	"id" integer NOT NULL DEFAULT nextval('orders_id_seq'),
 	"creation_date" TIMESTAMP NOT NULL,
 	"pickup_time" TIMESTAMP NOT NULL,
-	"amount" integer NOT NULL,
 	"fk_supermarket" integer NOT NULL,
 	"fk_status" integer NOT NULL,
 	CONSTRAINT "orders_pk" PRIMARY KEY ("id")
@@ -141,7 +140,6 @@ CREATE TABLE "coupons" (
 	"id" integer NOT NULL,
 	"code" VARCHAR(255) NOT NULL,
 	"percentage" DECIMAL NOT NULL,
-	"used" boolean NOT NULL,
 	CONSTRAINT "coupons_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -334,9 +332,10 @@ COPY public.has_product (fk_supermarket, fk_product, fk_department) FROM stdin;
 
 
 COPY public.status (id, name) FROM stdin;
-1	Ricevuto
-2	Pronto
-3	Ritirato
+1	Sospeso
+2	Ricevuto
+3	Pronto
+4	Ritirato
 \.
 
 
@@ -380,3 +379,4 @@ COPY public.has_weight (fk_product, fk_weight) FROM stdin;
 
 
 ALTER SEQUENCE users_id_seq RESTART WITH 4;
+ALTER SEQUENCE orders_id_seq RESTART WITH 1;

@@ -57,7 +57,7 @@ const get_supermarkets = (offset, limit) => {
 
 const get_products = (id_supermercato, limit, offset) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufatcurer, W.um AS um, MIN(W.value) AS weight FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um limit $2 offset $3',
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufacturer, W.um AS um, MIN(W.value) AS weight FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um limit $2 offset $3',
     values: [id_supermercato, limit, offset]
   }
 }
@@ -83,6 +83,41 @@ const del_favourite = (id_utente, id_prodotto) => {
   }
 }
 
+const add_order = (creation_date, pickup_time, id_supermercato) => {
+  return {
+    text: 'INSERT INTO orders(creation_date, pickup_time, fk_supermarket, fk_status) VALUES($1, $2, $3, 1) RETURNING id',
+    values: [creation_date, pickup_time, id_supermercato]
+  }
+}
+
+const update_order = (order_id, status) => {
+  return {
+    text: 'UPDATE orders SET fk_status = $2 WHERE id = $1',
+    values: [order_id, status]
+  }
+}
+
+const add_has_order = (id_utente, id_ordine) => {
+  return {
+    text: 'INSERT INTO has_order(fk_user, fk_order) VALUES($1, $2)',
+    values: [id_utente, id_ordine]
+  }
+}
+
+const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
+  return {
+    text: 'INSERT INTO shopping_cart(fk_order, fk_product, fk_weight, quantity) VALUES($1, $2, $3, $4)',
+    values: [id_ordine, id_prodotto, id_peso, quantita]
+  }
+}
+
+const add_coupon = (id_ordine, id_coupon) => {
+  return {
+    text: 'INSERT INTO has_coupon(fk_order, fk_coupon) VALUES($1, $2)',
+    values: [id_ordine, id_coupon]
+  }
+}
+
 const get_departments = (id_supermercato, limit, offset) => {
   return {
     text: 'SELECT DISTINCT D.name AS name, D.id AS id FROM departments D JOIN has_product H ON D.id = H.fk_department WHERE H.fk_supermarket = $1 limit $2 offset $3',
@@ -103,7 +138,12 @@ const queries = {
   get_departments,
   get_weights,
   add_favourite,
-  del_favourite
+  del_favourite,
+  add_order,
+  add_has_order,
+  add_to_shopping_cart,
+  add_coupon,
+  update_order
 }
 
 exports.queries = queries;
