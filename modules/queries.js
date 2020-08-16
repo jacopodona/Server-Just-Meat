@@ -57,7 +57,7 @@ const get_supermarkets = (offset, limit) => {
 
 const get_products = (id_supermercato, limit, offset) => {
   return {
-    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufacturer, W.um AS um, MIN(W.value) AS weight, W.id AS fk_weight, LP.fk_user FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id LEFT JOIN love_products LP ON LP.fk_product = P.id WHERE S.id = 4 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um, W.id, LP.fk_user limit $2 offset $3',
+    text: 'SELECT P.id AS id, P.name AS name, price, barcode, discount, image, description, D.id AS department, M.name AS manufacturer, W.um AS um, MIN(W.value) AS weight, W.id AS fk_weight, LP.fk_user FROM products P JOIN has_product H ON P.id = H.fk_product JOIN supermarkets S ON H.fk_supermarket = S.id JOIN departments D ON D.id = H.fk_department JOIN manufacturers M ON M.id = P.fk_manufacturer JOIN has_weight HW ON HW.fk_product=P.id JOIN weights W ON HW.fk_weight=W.id LEFT JOIN love_products LP ON LP.fk_product = P.id WHERE S.id = $1 GROUP BY P.id, P.name, price, barcode, discount, image, description, D.id, M.name, W.um, W.id, LP.fk_user limit $2 offset $3',
     values: [id_supermercato, limit, offset]
   }
 }
