@@ -40,6 +40,7 @@ CREATE TABLE "orders" (
 CREATE TABLE "has_order" (
 	"fk_user" integer NOT NULL,
 	"fk_order" integer NOT NULL,
+	"favourite" boolean NOT NULL DEFAULT FALSE,
 	CONSTRAINT "has_order_pk" PRIMARY KEY ("fk_user","fk_order")
 ) WITH (
   OIDS=FALSE
@@ -61,6 +62,8 @@ CREATE TABLE "supermarkets" (
 	"id" integer NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"address" VARCHAR(255) NOT NULL,
+	"latitude" double precision NOT NULL,
+	"longitude" double precision NOT NULL,
 	CONSTRAINT "supermarkets_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -290,11 +293,11 @@ COPY public.products (id, name, price, barcode, discount, image, description, fk
 
 
 
-COPY public.supermarkets (id, name, address) FROM stdin;
-1	NaturaSi	Via del Brennero, 138, 38121 Trento TN
-2	ALDI	Via del Brennero, 111, 38122 Trento TN
-3	Tito Speck - Il Maso dello Speck	Via Giuseppe Mazzini, 2, 38122 Trento TN
-4	MiniPoli	Via Benedetto Giovanelli, 25, 38122 Trento TN
+COPY public.supermarkets (id, name, address, latitude, longitude) FROM stdin;
+1	NaturaSi	Via del Brennero, 138, 38121 Trento TN	46.0794688	11.1205185
+2	ALDI	Via del Brennero, 111, 38122 Trento TN	46.086018	11.1152424
+3	Tito Speck - Il Maso dello Speck	Via Giuseppe Mazzini, 2, 38122 Trento TN	46.0663178	11.1203758
+4	MiniPoli	Via Benedetto Giovanelli, 25, 38122 Trento TN	46.0646391	11.1294193
 \.
 
 

@@ -163,7 +163,7 @@ router.post('/add_order', verifyToken, (req, res) => {
         return res.status(500).json({ "Error message": "Internal server error:"+err });
       }
       const order_id = result.rows[0].id;
-      client.query(queries.add_has_order(auth_data.id, order_id), (err, result) => {
+      client.query(queries.add_has_order(auth_data.id, order_id, req.body.is_favourite), (err, result) => {
         if (err) {
           return res.status(500).json({ "Error message": "Internal server error:"+err });
         }
@@ -196,6 +196,66 @@ router.post('/add_order', verifyToken, (req, res) => {
         }
         return res.status(200).json({ "results": result.rows });
       });
+    });
+  });
+});
+
+router.get('/get_order/:id_order', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.get_order_by_id(order_id, (err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount } });
+    }));
+  });
+});
+
+router.get('/get_user_orders', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+    
+    client.query(queries.get_user_orders(auth_data.id, (err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount } });
+    }));
+  });
+});
+
+router.get('/get_orders', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.get_all_orders((err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount } });
+    }));
+  });
+});
+
+router.get('/get_favourite_orders', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.get_favourite_orders(auth_data.id), (err, result) => {
+      if (err) {
+        return res.status(500).json({ "Error message": "Internal server error:"+err });
+      }
+      return res.status(200).json({ "results": result.rows, metadata: { returned: result.rowCount } });
     });
   });
 });

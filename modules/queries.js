@@ -97,10 +97,38 @@ const update_order = (order_id, status) => {
   }
 }
 
-const add_has_order = (id_utente, id_ordine) => {
+const add_has_order = (id_utente, id_ordine, favourite) => {
   return {
-    text: 'INSERT INTO has_order(fk_user, fk_order) VALUES($1, $2)',
-    values: [id_utente, id_ordine]
+    text: 'INSERT INTO has_order(fk_user, fk_order, favourite) VALUES($1, $2, $3)',
+    values: [id_utente, id_ordine, favourite]
+  }
+}
+
+const get_order_by_id = (id_ordine) => {
+  return {
+    text: 'SELECT O.id, O.creation_date, O.pickup_time, S.name, ST.name AS status, P.name AS product_name, P.price, C.percentage AS coupon_discount FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN status ST ON O.fk_status=ST.id JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE O.id=$1',
+    values: [id_ordine]
+  }
+}
+
+const get_user_orders = (id_utente) => {
+  return {
+    text: 'SELECT O.id, S.name, ST.name AS status, SUM(P.price) AS amount, C.percentage AS coupon_discount FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product JOIN has_order HO ON O.id=HO.fk_user JOIN status ST ON ST.id=O.fk_status LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE HO.fk_user=$1 GROUP BY O.id, S.name, ST.name, C.percentage',
+    values: [id_utente]
+  }
+}
+
+const get_all_orders = () => {
+  return {
+    text: 'SELECT O.id, S.name, ST.name AS status, SUM(P.price) AS amount, C.percentage AS coupon_discount, U.name AS user_name, U.last_name AS user_lname FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product JOIN has_order HO ON O.id=HO.fk_user JOIN status ST ON ST.id=O.fk_status JOIN users U ON U.id=HO.fk_user LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon GROUP BY O.id, S.name, ST.name, C.percentage, U.name, U.last_name',
+    values: []
+  }
+}
+
+const get_favourite_orders = (id_utente) => {
+  return {
+    text: 'SELECT O.id, S.name, ST.name AS status, SUM(P.price) AS amount, C.percentage AS coupon_discount FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product JOIN has_order HO ON O.id=HO.fk_user JOIN status ST ON ST.id=O.fk_status LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE HO.fk_user=$1 AND HO.favourite=\'true\' GROUP BY O.id, S.name, ST.name, C.percentage',
+    values: [id_utente]
   }
 }
 
@@ -151,7 +179,11 @@ const queries = {
   add_to_shopping_cart,
   get_coupon,
   add_coupon,
-  update_order
+  update_order,
+  get_order_by_id,
+  get_user_orders,
+  get_all_orders,
+  get_favourite_orders
 }
 
 exports.queries = queries;

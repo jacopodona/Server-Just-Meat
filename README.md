@@ -26,6 +26,7 @@ Link Heroku: `http://just-feet.herokuapp.com`
 {
   pickup_time: "",
   supermarket_id: -1,
+  is_favourite: false,
   shopping_cart: [
     {
       fk_product: -1,
@@ -44,6 +45,10 @@ Link Heroku: `http://just-feet.herokuapp.com`
 }
 ```
 - **GET** `/api/v1/get_coupon/:code`: returns id and discount for a coupon, if not already used;
+- **GET** `/api/v1/get_orders`: returns all the orders;
+- **GET** `/api/v1/get_order/:id`: returns an order's data from the order id;
+- **GET** `/api/v1/get_user_orders`: returns all orders for the current user;
+- **GET** `/api/v1/get_favourite_orders`: gets all the favourite orders for the current user;
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body;
