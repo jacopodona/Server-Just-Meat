@@ -15,13 +15,13 @@ Link Heroku: `http://just-feet.herokuapp.com`
   product_id: -1
 }
 ```
-- **POST** `/api/v1/del_favourite`: removes a favourite item;
+- **POST** `/api/v1/del_favourite`: removes a favourite item:
 ```
 {
   product_id: -1
 }
 ```
-- **POST** `/api/v1/add_order`: adds an order;
+- **POST** `/api/v1/add_order`: adds an order:
 ```
 {
   pickup_time: "",
