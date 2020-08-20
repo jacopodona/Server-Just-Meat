@@ -49,6 +49,14 @@ Link Heroku: `http://just-feet.herokuapp.com`
 - **GET** `/api/v1/get_order/:id`: returns an order's data from the order id;
 - **GET** `/api/v1/get_user_orders`: returns all orders for the current user;
 - **GET** `/api/v1/get_favourite_orders`: gets all the favourite orders for the current user;
+- **POST** `/api/v1/get_supermarkets_in_range`: returns available supermarkets given a position and a range (in meters):
+```
+{
+  latitude: -1.0,
+  longitude: -1.0,
+  range: -1
+}
+```
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body;
