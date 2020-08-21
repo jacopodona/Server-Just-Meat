@@ -141,7 +141,7 @@ const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
 
 const get_coupon = (codice) => {
   return {
-    text: 'SELECT * FROM coupons C LEFT JOIN has_coupon H ON C.code = H.fk_coupon WHERE C.code = $1',
+    text: 'SELECT percentage, fk_order AS order FROM coupons C LEFT JOIN has_coupon H ON C.code=H.fk_coupon WHERE C.code=$1',
     values: [codice]
   }
 }
