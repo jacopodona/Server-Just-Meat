@@ -57,6 +57,13 @@ Link Heroku: `http://just-feet.herokuapp.com`
   range: -1
 }
 ```
+- **POST** `/api/v1/set_order_status`: sets an order' state (1 = ricevuto, 2 = pronto, 3 = ritirato):
+```
+{
+  order_id: -1,
+  status: -1
+}
+```
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body;

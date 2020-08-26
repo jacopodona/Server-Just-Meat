@@ -397,6 +397,28 @@ router.get('/get_user_orders', verifyToken, (req, res) => {
   });
 });
 
+router.post('/set_order_status', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err && req.token !== "justmeat") {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.update_order(req.body.order_id, req.body.status), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+      }
+      return res.status(200).json({
+        "results": { },
+        metadata: {
+          returned: result.rowCount
+        }
+      });
+    });
+  });
+});
+
 router.get('/get_favourite_orders', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
