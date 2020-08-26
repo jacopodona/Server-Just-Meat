@@ -301,13 +301,13 @@ router.post('/add_order', verifyToken, (req, res) => {
   });
 });
 
-router.get('/get_order/:id_order', verifyToken, (req, res) => {
+router.get('/get_orders', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {
       return res.status(403).send('Forbidden');
     }
 
-    client.query(queries.get_order_by_id(order_id, (err, result) => {
+    client.query(queries.get_all_orders(), (err, result) => {
       if (err) {
         return res.status(500).json({
           "Error message": "Internal server error:" + err
@@ -319,7 +319,29 @@ router.get('/get_order/:id_order', verifyToken, (req, res) => {
           returned: result.rowCount
         }
       });
-    }));
+    });
+  });
+});
+
+router.get('/get_order/:id_order', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.get_order_by_id(order_id), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+      }
+      return res.status(200).json({
+        "results": result.rows,
+        metadata: {
+          returned: result.rowCount
+        }
+      });
+    });
   });
 });
 
@@ -329,7 +351,7 @@ router.get('/get_user_orders', verifyToken, (req, res) => {
       return res.status(403).send('Forbidden');
     }
 
-    client.query(queries.get_user_orders(auth_data.id, (err, result) => {
+    client.query(queries.get_user_orders(auth_data.id), (err, result) => {
       if (err) {
         return res.status(500).json({
           "Error message": "Internal server error:" + err
@@ -341,29 +363,7 @@ router.get('/get_user_orders', verifyToken, (req, res) => {
           returned: result.rowCount
         }
       });
-    }));
-  });
-});
-
-router.get('/get_orders', verifyToken, (req, res) => {
-  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
-    if (err) {
-      return res.status(403).send('Forbidden');
-    }
-
-    client.query(queries.get_all_orders((err, result) => {
-      if (err) {
-        return res.status(500).json({
-          "Error message": "Internal server error:" + err
-        });
-      }
-      return res.status(200).json({
-        "results": result.rows,
-        metadata: {
-          returned: result.rowCount
-        }
-      });
-    }));
+    });
   });
 });
 
