@@ -106,7 +106,14 @@ const add_has_order = (id_utente, id_ordine, favourite) => {
 
 const get_order_by_id = (id_ordine) => {
   return {
-    text: 'SELECT O.id, O.creation_date, O.pickup_time, S.name, ST.name AS status, P.name AS product_name, P.price, C.percentage AS coupon_discount FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN status ST ON O.fk_status=ST.id JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE O.id=$1',
+    text: 'SELECT O.creation_date, O.pickup_time, S.name, ST.name AS status, P.name AS product_name, P.price FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN status ST ON O.fk_status=ST.id JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product WHERE O.id=$1',
+    values: [id_ordine]
+  }
+}
+
+const get_coupon_for_order = (id_ordine) => {
+  return {
+    text: 'SELECT C.percentage FROM coupons C JOIN has_coupon H ON H.fk_coupon=C.code WHERE H.fk_order=$1',
     values: [id_ordine]
   }
 }
@@ -183,7 +190,8 @@ const queries = {
   get_order_by_id,
   get_user_orders,
   get_all_orders,
-  get_favourite_orders
+  get_favourite_orders,
+  get_coupon_for_order
 }
 
 exports.queries = queries;

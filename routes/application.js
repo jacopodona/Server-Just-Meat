@@ -11,6 +11,7 @@ const {
   verifyToken,
   haversine_distance
 } = require('../modules/utilities');
+const { escapeIdentifier } = require('../config/postgres-config');
 
 router.get('/get_supermarkets', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
@@ -302,11 +303,7 @@ router.post('/add_order', verifyToken, (req, res) => {
 });
 
 router.get('/get_orders', verifyToken, (req, res) => {
-  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
-    if (err) {
-      return res.status(403).send('Forbidden');
-    }
-
+  if(req.token === "justmeat") {
     client.query(queries.get_all_orders(), (err, result) => {
       if (err) {
         return res.status(500).json({
@@ -320,27 +317,57 @@ router.get('/get_orders', verifyToken, (req, res) => {
         }
       });
     });
-  });
+  } else {
+    return res.status(403).send('Forbidden');
+  }
 });
 
 router.get('/get_order/:id_order', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
-    if (err) {
+    if (err && req.token !== "justmeat") {
       return res.status(403).send('Forbidden');
     }
 
-    client.query(queries.get_order_by_id(order_id), (err, result) => {
+    client.query(queries.get_order_by_id(req.params.id_order), (err, result) => {
       if (err) {
         return res.status(500).json({
           "Error message": "Internal server error:" + err
         });
       }
-      return res.status(200).json({
-        "results": result.rows,
-        metadata: {
-          returned: result.rowCount
-        }
-      });
+      
+      let data;
+      if(result.rowCount > 0) {
+        client.query(queries.get_coupon_for_order(req.params.id_order), (err, result_2) => {
+          if (err) {
+            return res.status(500).json({
+              "Error message": "Internal server error:" + err
+            });
+          }
+          
+          let data = {
+            creation_date: result.rows[0].creation_date,
+            pickup_time: result.rows[0].pickup_time,
+            supermarket: result.rows[0].name,
+            status: result.rows[0].status,
+            products: result.rows.map(item => { return { product_name: item.product_name, price: item.price } }),
+            coupons_discounts: result_2.rows.map(item => item.percentage)
+          }
+
+          return res.status(200).json({
+            "results": data,
+            metadata: {
+              returned: result.rowCount
+            }
+          });
+        });
+      } else {
+        return res.status(200).json({
+          "results": { },
+          metadata: {
+            returned: result.rowCount
+          }
+        });
+      }
     });
   });
 });
