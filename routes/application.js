@@ -71,9 +71,8 @@ router.post('/get_supermarkets_in_range', verifyToken, (req, res) => {
         return res.status(500).send('Internal server error.');
       }
 
-      var data = result.rows.filter((supermarket) => {
-        haversine_distance(req.body.latitude, supermarket.latitude, req.body.longitude, supermarket.longitude) < req.body.range;
-      });
+      var data = result.rows.filter((supermarket) =>
+        haversine_distance(req.body.latitude, supermarket.latitude, req.body.longitude, supermarket.longitude) < req.body.range);
 
       return res.status(200).json({
         "results": data,
