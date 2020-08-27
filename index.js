@@ -18,6 +18,7 @@ const app = express();
 // Server options
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(express.static('public'));
 
 app.post('/test', (req, res) => {
   res.json({ code: 200, message: req.body.test + " from server!" });

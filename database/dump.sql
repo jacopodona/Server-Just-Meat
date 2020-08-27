@@ -317,27 +317,16 @@ COPY public.credentials (fk_user, hashed_password, mail) FROM stdin;
 --
 
 COPY public.departments (id, name) FROM stdin;
-1	Carne
-2	Pesce
-3	Formaggi
-4	Uova
-5	Condimenti
-6	Creme spalmabili
-7	Dolcificanti e affini
-8	Frutta
-9	Gelateria
-10	Gelatine
-11	Fritture
-12	Funghi commestibili
-13	Legumi e derivati
-14	Molluschi e derivati
-15	Noci e semi oleaginosi
-16	Ortaggi
-17	Pasta
-18	Pasticceria
-19	Prodotti da forno
-20	Salse
-21	Snack
+1	Ortofrutta
+2	Macelleria
+3	Pescheria
+4	Pane, pizza e sostitutivi
+5	Formaggi, salumi e gastronomia
+6	Prodotti freschi
+7	Dispensa salata
+8	Dispensa dolce
+9	Bevande
+10	Surgelati
 \.
 
 
@@ -365,32 +354,32 @@ COPY public.has_order (fk_user, fk_order, favourite) FROM stdin;
 --
 
 COPY public.has_product (fk_supermarket, fk_product, fk_department) FROM stdin;
-1	1	1
-1	2	12
-1	3	3
-3	5	4
-3	6	21
-3	4	16
-3	7	14
-2	8	1
-2	9	13
-2	10	12
+1	1	8
+1	2	1
+1	3	1
+3	4	5
+3	5	5
+3	6	5
+3	7	5
+2	8	8
+2	9	8
+2	10	10
 4	11	1
-4	12	10
-4	13	5
-4	14	8
-4	15	7
-4	16	17
-4	17	15
-4	18	15
-4	19	13
-4	20	13
-4	21	7
-4	22	9
-4	23	4
-4	24	21
-4	25	21
-4	26	19
+4	12	1
+4	13	1
+4	14	1
+4	15	1
+4	16	1
+4	17	1
+4	18	2
+4	19	2
+4	20	2
+4	21	2
+4	22	2
+4	23	3
+4	24	3
+4	25	3
+4	26	3
 \.
 
 
@@ -462,32 +451,32 @@ COPY public.orders (id, creation_date, pickup_time, fk_supermarket, fk_status) F
 --
 
 COPY public.products (id, name, price, barcode, discount, image, description, fk_manufacturer) FROM stdin;
-1	Tisana bio	5.50	to_implement	0	no_image	description	1
-2	Lattuga nostrana bio 0.5kg	2.50	to_implement	0.40	no_image	description	1
-3	Peperoni nostrani bio 0.5kg	2.30	to_implement	0.40	no_image	description	1
-4	Formaggio casolet 0.4kg	4.25	to_implement	0.40	no_image	description	1
-5	Formaggio Trentingrana 1.5kg	9.60	to_implement	0.40	no_image	description	1
-6	Speck Alto-Adige 0.2kg	2.20	to_implement	0.40	no_image	description	1
-7	Soppressa nostrana 0.2kg	2.65	to_implement	0.40	no_image	description	1
-8	Tè alla pesca San Benedetto 1.5l	1.50	to_implement	0.40	no_image	description	1
-9	Yogurt Mila	0.25	to_implement	0.40	no_image	description	1
-10	Pizza surgelata Buitoni	3.25	to_implement	0	no_image	description	1
-11	Ananas	1.99	to_implement	0	no_image	description	1
-12	Pere william 1kg	2.99	to_implement	0	no_image	description	1
-13	Fragole in vaschetta 0.5kg	1.5	to_implement	0	no_image	description	1
-14	Finocchio 1kg	1.8	to_implement	0.30	no_image	description	1
-15	Insalata misticanza 0.125kg	1.3	to_implement	0.20	no_image	description	1
-16	Insalata arcobaleno 0.5kg	2.29	to_implement	0.40	no_image	description	1
-17	Zucchine 1kg	2.39	to_implement	0.50	no_image	description	1
-18	Tagliata di bovino adulta 0.5kg	17.50	to_implement	0.30	no_image	description	1
-19	Fette sceltissime di vitello 0.5kg	23.9	to_implement	0.20	no_image	description	1
-20	Spiedini di pollo x4 0.5kg	11.9	to_implement	0.40	no_image	description	1
-21	Lonza di suino 0.5kg	8.8	to_implement	0.40	no_image	description	1
-22	Chicken burger 0.2kg	2.98	to_implement	0.40	no_image	description	1
-23	Seppia pulita fresca 1kg	20.9	to_implement	0.80	no_image	description	1
-24	Spiedino di pesce 1kg	17.9	to_implement	0.70	no_image	description	1
-25	Trota salmonata	10.9	to_implement	0.60	no_image	description	1
-26	Orata fresca 1kg	8.5	to_implement	0.20	no_image	description	1
+1	Tisana bio	5.50	to_implement	0	/images/1.jpg	Coccobello	1
+2	Lattuga nostrana bio	2.50	to_implement	0.40	/images/2.jpg	Coccobello	1
+3	Peperoni nostrani bio	2.30	to_implement	0.40	/images/3.jpg	Coccobello	1
+4	Formaggio casolet	4.25	to_implement	0.40	/images/4.jpg	Coccobello	1
+5	Formaggio Trentingrana	9.60	to_implement	0.40	/images/5.jpg	Coccobello	1
+6	Speck Alto-Adige	2.20	to_implement	0.40	/images/6.jpg	Coccobello	1
+7	Soppressa nostrana	2.65	to_implement	0.40	/images/7.jpg	Coccobello	1
+8	Tè alla pesca San Benedetto	1.50	to_implement	0.40	/images/8.jpg	Coccobello	1
+9	Yogurt bianco Mila	0.25	to_implement	0.40	/images/9.jpg	Coccobello	1
+10	Pizza surgelata Buitoni	3.25	to_implement	0	/images/10.jpg	Coccobello	1
+11	Ananas	1.99	to_implement	0	/images/11.jpg	Coccobello	1
+12	Pere william	2.99	to_implement	0	/images/12.jpg	Coccobello	1
+13	Fragole in vaschetta	1.5	to_implement	0	/images/13.jpg	Coccobello	1
+14	Finocchio	1.8	to_implement	0.30	/images/14.jpg	Coccobello	1
+15	Insalata misticanza	1.3	to_implement	0.20	/images/15.jpg	Coccobello	1
+16	Insalata arcobaleno	2.29	to_implement	0.40	/images/16.jpg	Coccobello	1
+17	Zucchine	2.39	to_implement	0.50	/images/17.jpg	Coccobello	1
+18	Tagliata di bovino adulta	17.50	to_implement	0.30	/images/18.jpg	Coccobello	1
+19	Fette sceltissime di vitello	23.9	to_implement	0.20	/images/19.jpg	Coccobello	1
+20	Spiedini di pollo x4	11.9	to_implement	0.40	/images/20.jpg	Coccobello	1
+21	Lonza di suino	8.8	to_implement	0.40	/images/21.jpg	Coccobello	1
+22	Chicken burger	2.98	to_implement	0.40	/images/22.jpg	Coccobello	1
+23	Seppia pulita fresca	20.9	to_implement	0.80	/images/23.jpg	Coccobello	1
+24	Spiedino di pesce	17.9	to_implement	0.70	/images/24.jpg	Coccobello	1
+25	Trota salmonata	10.9	to_implement	0.60	/images/25.jpg	Coccobello	1
+26	Orata fresca	8.5	to_implement	0.20	/images/26.jpg	Coccobello	1
 \.
 
 
