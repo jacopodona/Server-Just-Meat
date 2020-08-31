@@ -510,7 +510,7 @@ COPY public.status (id, name) FROM stdin;
 COPY public.supermarkets (id, name, address, latitude, longitude) FROM stdin;
 1	NaturaSi	Via del Brennero, 138, 38121 Trento TN	46.0794688000000008	11.1205184999999993
 2	ALDI	Via del Brennero, 111, 38122 Trento TN	46.0860180000000028	11.1152423999999996
-3	Tito Speck - Il Maso dello Speck	Via Giuseppe Mazzini, 2, 38122 Trento TN	46.0663178000000002	11.1203757999999997
+3	Coop	Via Giuseppe Mazzini, 2, 38122 Trento TN	46.0663178000000002	11.1203757999999997
 4	MiniPoli	Via Benedetto Giovanelli, 25, 38122 Trento TN	46.0646391000000008	11.1294193000000003
 \.
 
