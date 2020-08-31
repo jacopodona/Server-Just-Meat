@@ -37,7 +37,7 @@ passport.use('provider', new LocalStrategy({ usernameField: 'mail', passwordFiel
   function(mail, psw, done) {
     client.query(queries.get_user_id(mail), (err, result) => {
       if(err) return done(err);
-      done(null, { id: (result.rows[0]  ? result.rows[0].id : -1) });
+      done(null, { id: (result.rows[0] ? result.rows[0].id : -1) });
     });
   }
 ));
