@@ -120,7 +120,7 @@ const get_coupon_for_order = (id_ordine) => {
 
 const get_user_orders = (id_utente) => {
   return {
-    text: 'SELECT O.id AS order_id, S.name AS supermarket, O.pickup_time AS pickup_time, ST.name AS status FROM orders O JOIN has_order HO ON O.id=HO.fk_order JOIN supermarkets S ON S.id=O.fk_supermarket JOIN status ST ON ST.id=O.fk_status WHERE HO.fk_user=$1',
+    text: 'SELECT O.id AS order_id, S.name AS supermarket, S.address AS supermarket_address, O.pickup_time AS pickup_time, ST.name AS status FROM orders O JOIN has_order HO ON O.id=HO.fk_order JOIN supermarkets S ON S.id=O.fk_supermarket JOIN status ST ON ST.id=O.fk_status WHERE HO.fk_user=$1',
     values: [id_utente]
   }
 }
