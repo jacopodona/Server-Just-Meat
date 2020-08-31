@@ -82,7 +82,7 @@ router.post('/login/local', passport.authenticate('local', { session: false }), 
 
 router.post('/login/other', passport.authenticate('provider', { session: false }), (req, res) => {
   let user = {
-    name: req.body.name.split(' ')[0],
+    name: req.body.name,
     last_name: req.body.last_name,
     mail: req.body.mail,
     password: req.body.id
