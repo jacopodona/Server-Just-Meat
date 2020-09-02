@@ -76,7 +76,7 @@ ALTER TABLE public.has_coupon OWNER TO admin;
 CREATE TABLE public.has_order (
     fk_user integer NOT NULL,
     fk_order integer NOT NULL,
-    favourite boolean DEFAULT false NOT NULL
+    favourite character varying(255) DEFAULT NULL::character varying
 );
 
 
@@ -344,8 +344,8 @@ COPY public.has_coupon (fk_order, fk_coupon) FROM stdin;
 --
 
 COPY public.has_order (fk_user, fk_order, favourite) FROM stdin;
-1	1	f
-1	2	f
+1	1	Spesa bellissima
+1	2	\N
 \.
 
 

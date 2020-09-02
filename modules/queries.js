@@ -134,7 +134,7 @@ const get_all_orders = () => {
 
 const get_favourite_orders = (id_utente) => {
   return {
-    text: 'SELECT O.id, S.name, ST.name AS status, SUM(P.price) AS amount, C.percentage AS coupon_discount FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product JOIN has_order HO ON O.id=HO.fk_user JOIN status ST ON ST.id=O.fk_status LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE HO.fk_user=$1 AND HO.favourite=\'true\' GROUP BY O.id, S.name, ST.name, C.percentage',
+    text: 'SELECT O.id, S.name, ST.name AS status, SUM(P.price) AS amount, C.percentage AS coupon_discount, HO.favourite AS name FROM orders O JOIN supermarkets S ON S.id=O.fk_supermarket JOIN shopping_cart SC ON SC.fk_order=O.id JOIN products P ON P.id=SC.fk_product JOIN has_order HO ON O.id=HO.fk_user JOIN status ST ON ST.id=O.fk_status LEFT JOIN has_coupon HC ON HC.fk_order=O.id LEFT JOIN coupons C ON C.code=HC.fk_coupon WHERE HO.fk_user=$1 AND HO.favourite IS NOT NULL GROUP BY O.id, S.name, ST.name, C.percentage, HO.favourite',
     values: [id_utente]
   }
 }
