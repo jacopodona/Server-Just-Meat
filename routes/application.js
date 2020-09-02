@@ -452,7 +452,7 @@ router.get('/get_coupon/:code', verifyToken, (req, res) => {
           "Error message": "Internal server error:" + err
         });
       }
-      if (result.length == 0 || result.rows[0].fk_order != null) return res.status(200).json({
+      if (result.rowCount === 0 || result.rows[0].order != null) return res.status(200).json({
         code: 500,
         discount: -1.0
       });
