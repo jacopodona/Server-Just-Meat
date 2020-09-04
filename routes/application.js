@@ -424,14 +424,26 @@ router.get('/get_favourite_orders', verifyToken, (req, res) => {
       return res.status(403).send('Forbidden');
     }
 
-    client.query(queries.get_favourite_orders(auth_data.id), (err, result) => {
+    var data = []
+    client.query(queries.get_favourite_orders(auth_data.id), async (err, result) => {
       if (err) {
         return res.status(500).json({
           "Error message": "Internal server error:" + err
         });
       }
+      for(let i = 0; i < result.rowCount; i++) {
+        let products = await client.query(queries.get_ordered_products(result.rows[i].order_id));
+        data.push({
+          order_id: result.rows[i].order_id,
+          supermarket_id: result.rows[i].supermarket_id,
+          supermarket_name: result.rows[i].supermarket_name,
+          favourite: result.rows[i].favourite,
+          products: products.rows
+        });
+      }
+
       return res.status(200).json({
-        "results": result.rows,
+        "results": data,
         metadata: {
           returned: result.rowCount
         }
