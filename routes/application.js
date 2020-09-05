@@ -452,6 +452,64 @@ router.get('/get_favourite_orders', verifyToken, (req, res) => {
   });
 });
 
+router.post('/add_favourite_address', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+    
+    client.query(queries.add_address(req.body.name, req.body.address, req.body.latitude, req.body.longitude), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+      }
+      const address_id = result.rows[0].id;
+      
+      client.query(queries.add_has_address(auth_data.id, address_id), (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            "Error message": "Internal server error:" + err
+          });
+        }
+
+        return res.status(200).json({
+          results: {
+            message: "OK."
+          },
+          metadata: {
+            returned: result.rowCount
+          }
+        });
+      })
+    });
+  });
+});
+
+router.get('/get_favourite_addresses', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+    
+    client.query(queries.get_favourite_addresses(auth_data.id), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+        
+      }
+
+      return res.status(200).json({
+        results: result.rows,
+        metadata: {
+          returned: result.rowCount
+        }
+      });
+    })
+  });
+});
+
 router.get('/get_coupon/:code', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {

@@ -146,6 +146,27 @@ const get_ordered_products = (id_ordine) => {
   }
 }
 
+const add_address = (nome, indirizzo, latitudine, longitudine) => {
+  return {
+    text: 'INSERT INTO addresses (name, address, latitude, longitude) VALUES ($1, $2, $3, $4) RETURNING id',
+    values: [nome, indirizzo, latitudine, longitudine]
+  }
+}
+
+const add_has_address = (id_utente, id_indirizzo) => {
+  return {
+    text: 'INSERT INTO has_address (fk_user, fk_address) VALUES ($1, $2)',
+    values: [id_utente, id_indirizzo]
+  }
+}
+
+const get_favourite_addresses = (id_utente) => {
+  return {
+    text: 'SELECT A.id, A.name, A.address, A.latitude, A.longitude FROM addresses A JOIN has_address HA ON HA.fk_address=A.id WHERE HA.fk_user=$1',
+    values: [id_utente]
+  }
+}
+
 const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
   return {
     text: 'INSERT INTO shopping_cart(fk_order, fk_product, fk_weight, quantity) VALUES($1, $2, $3, $4)',
@@ -199,7 +220,10 @@ const queries = {
   get_all_orders,
   get_favourite_orders,
   get_ordered_products,
-  get_coupon_for_order
+  get_coupon_for_order,
+  add_address,
+  add_has_address,
+  get_favourite_addresses
 }
 
 exports.queries = queries;

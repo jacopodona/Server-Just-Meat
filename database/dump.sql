@@ -21,6 +21,43 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: addresses; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.addresses (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    address character varying(255) NOT NULL,
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL
+);
+
+
+ALTER TABLE public.addresses OWNER TO admin;
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.addresses_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.addresses_id_seq OWNER TO admin;
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.addresses_id_seq OWNED BY public.addresses.id;
+
+
+--
 -- Name: coupons; Type: TABLE; Schema: public; Owner: admin
 --
 
@@ -56,6 +93,18 @@ CREATE TABLE public.departments (
 
 
 ALTER TABLE public.departments OWNER TO admin;
+
+--
+-- Name: has_address; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.has_address (
+    fk_user integer NOT NULL,
+    fk_address integer NOT NULL
+);
+
+
+ALTER TABLE public.has_address OWNER TO admin;
 
 --
 -- Name: has_coupon; Type: TABLE; Schema: public; Owner: admin
@@ -277,6 +326,13 @@ CREATE TABLE public.weights (
 ALTER TABLE public.weights OWNER TO admin;
 
 --
+-- Name: addresses id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.addresses ALTER COLUMN id SET DEFAULT nextval('public.addresses_id_seq'::regclass);
+
+
+--
 -- Name: orders id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
@@ -288,6 +344,14 @@ ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.order
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.addresses (id, name, address, latitude, longitude) FROM stdin;
+\.
 
 
 --
@@ -327,6 +391,14 @@ COPY public.departments (id, name) FROM stdin;
 8	Dispensa dolce
 9	Bevande
 10	Surgelati
+\.
+
+
+--
+-- Data for Name: has_address; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.has_address (fk_user, fk_address) FROM stdin;
 \.
 
 
@@ -539,6 +611,13 @@ COPY public.weights (id, um, value) FROM stdin;
 
 
 --
+-- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.addresses_id_seq', 1, false);
+
+
+--
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
@@ -550,6 +629,14 @@ SELECT pg_catalog.setval('public.orders_id_seq', 3, false);
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 4, false);
+
+
+--
+-- Name: addresses addresses_pk; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.addresses
+    ADD CONSTRAINT addresses_pk PRIMARY KEY (id);
 
 
 --
@@ -574,6 +661,14 @@ ALTER TABLE ONLY public.credentials
 
 ALTER TABLE ONLY public.departments
     ADD CONSTRAINT departments_pk PRIMARY KEY (id);
+
+
+--
+-- Name: has_address has_address_pk; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.has_address
+    ADD CONSTRAINT has_address_pk PRIMARY KEY (fk_user, fk_address);
 
 
 --
@@ -686,6 +781,22 @@ ALTER TABLE ONLY public.weights
 
 ALTER TABLE ONLY public.credentials
     ADD CONSTRAINT credentials_fk0 FOREIGN KEY (fk_user) REFERENCES public.users(id);
+
+
+--
+-- Name: has_address has_address_fk0; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.has_address
+    ADD CONSTRAINT has_address_fk0 FOREIGN KEY (fk_user) REFERENCES public.users(id);
+
+
+--
+-- Name: has_address has_address_fk1; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.has_address
+    ADD CONSTRAINT has_address_fk1 FOREIGN KEY (fk_address) REFERENCES public.addresses(id);
 
 
 --

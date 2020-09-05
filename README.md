@@ -64,6 +64,16 @@ Link Heroku: `http://just-feet.herokuapp.com`
   status: -1
 }
 ```
+- **POST** `/api/v1/add_favourite_address`: adds an address as favourite:
+```
+{
+  name: "",
+  address: "",
+  latitude: -1.0,
+  longitude: -1.0
+}
+```
+- **GET** `/api/v1/get_favourite_addresses`: returns all favourite addresses for a user;
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body;
@@ -87,8 +97,6 @@ Link Heroku: `http://just-feet.herokuapp.com`
   psw: ""
 }
 ```
-- **POST** `/auth/login/google`: to implement;
-- **POST** `/auth/login/facebook`: to implement;
 
 ## Uso su Android Studio
 
