@@ -510,6 +510,39 @@ router.get('/get_favourite_addresses', verifyToken, (req, res) => {
   });
 });
 
+router.post('/del_favourite_address', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+    
+    client.query(queries.del_has_address(req.body.address_id), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+      }
+
+      client.query(queries.del_favourite_address(req.body.address_id), (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            "Error message": "Internal server error:" + err
+          });
+        }
+        
+        return res.status(200).json({
+          results: {
+            message: "OK."
+          },
+          metadata: {
+            returned: result.rowCount
+          }
+        });
+      });
+    });
+  });
+});
+
 router.get('/get_coupon/:code', verifyToken, (req, res) => {
   jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
     if (err) {

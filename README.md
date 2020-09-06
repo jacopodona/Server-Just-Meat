@@ -64,6 +64,7 @@ Link Heroku: `http://just-feet.herokuapp.com`
   status: -1
 }
 ```
+- **GET** `/api/v1/get_favourite_addresses`: returns all favourite addresses for a user;
 - **POST** `/api/v1/add_favourite_address`: adds an address as favourite:
 ```
 {
@@ -73,7 +74,12 @@ Link Heroku: `http://just-feet.herokuapp.com`
   longitude: -1.0
 }
 ```
-- **GET** `/api/v1/get_favourite_addresses`: returns all favourite addresses for a user;
+- **POST** `/api/v1/del_favourite_address`: removes an address:
+```
+{
+  address_id: -1
+}
+```
 
 #### Authentication
 - **POST** `/auth/signup`: for local signup, expects a JSON body;

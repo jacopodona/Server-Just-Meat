@@ -167,6 +167,20 @@ const get_favourite_addresses = (id_utente) => {
   }
 }
 
+const del_has_address = (id_indirizzo) => {
+  return {
+    text: 'DELETE FROM has_address WHERE fk_address=$1',
+    values: [id_indirizzo]
+  }
+}
+
+const del_favourite_address = (id_indirizzo) => {
+  return {
+    text: 'DELETE FROM addresses WHERE id=$1',
+    values: [id_indirizzo]
+  }
+}
+
 const add_to_shopping_cart = (id_ordine, id_prodotto, id_peso, quantita) => {
   return {
     text: 'INSERT INTO shopping_cart(fk_order, fk_product, fk_weight, quantity) VALUES($1, $2, $3, $4)',
@@ -223,7 +237,9 @@ const queries = {
   get_coupon_for_order,
   add_address,
   add_has_address,
-  get_favourite_addresses
+  get_favourite_addresses,
+  del_favourite_address,
+  del_has_address
 }
 
 exports.queries = queries;
