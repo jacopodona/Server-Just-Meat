@@ -362,10 +362,9 @@ COPY public.coupons (code, percentage) FROM stdin;
 abc	0.2
 def	0.4
 ghi	0.5
-jkl 0.4
-mno 0.2
-pqr 0.4
-stu 0.6
+jkl	0.2
+mno	0.4
+pqr	0.5
 \.
 
 
