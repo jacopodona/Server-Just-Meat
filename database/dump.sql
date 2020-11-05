@@ -329,6 +329,12 @@ ALTER TABLE public.weights OWNER TO admin;
 -- Name: addresses id; Type: DEFAULT; Schema: public; Owner: admin
 --
 
+CREATE TABLE public.fidcards (
+	id int NOT NULL,
+    fk_user int NOT NULL,
+	name character varying(255) NOT NULL    
+);
+
 ALTER TABLE ONLY public.addresses ALTER COLUMN id SET DEFAULT nextval('public.addresses_id_seq'::regclass);
 
 
@@ -612,6 +618,15 @@ COPY public.weights (id, um, value) FROM stdin;
 4	g	200
 \.
 
+COPY public.fidcards (id, name, fk_user) FROM stdin;
+85276945 ALDI 1
+41222621 ALDI 2
+82793189 MiniPoli 3
+80314652 Coop 2
+70133131 NaturaSi 1
+23770994 Coop 3
+\.
+
 
 --
 -- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
@@ -776,6 +791,12 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.weights
     ADD CONSTRAINT weights_pk PRIMARY KEY (id);
+    
+    
+    
+    
+ALTER TABLE ONLY public.fidcards
+	ADD CONSTRAINT fidcards_pk PRIMARY KEY(id);
 
 
 --
@@ -937,6 +958,9 @@ ALTER TABLE ONLY public.shopping_cart
 ALTER TABLE ONLY public.shopping_cart
     ADD CONSTRAINT shopping_cart_fk2 FOREIGN KEY (fk_weight) REFERENCES public.weights(id);
 
+
+ALTER TABLE public.fidcards
+	ADD CONSTRAINT fidelity_cards_fk FOREIGN KEY (fk_user) REFERENCES public.users(id);
 
 --
 -- PostgreSQL database dump complete

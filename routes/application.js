@@ -567,4 +567,26 @@ router.get('/get_coupon/:code', verifyToken, (req, res) => {
   });
 });
 
+router.get('/get_user_fidcards', verifyToken, (req, res) => {
+  jwt.verify(req.token, constants.JWT_SECRET_KEY, (err, auth_data) => {
+    if (err) {
+      return res.status(403).send('Forbidden');
+    }
+
+    client.query(queries.get_user_fidcards(auth_data.id), (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          "Error message": "Internal server error:" + err
+        });
+      }
+      return res.status(200).json({
+        "results": result.rows,
+        metadata: {
+          returned: result.rowCount
+        }
+      });
+    });
+  });
+});
+
 module.exports = router;
